@@ -16,9 +16,9 @@ import { prisma } from '~/server/prisma';
 const defaultPostSelect = Prisma.validator<Prisma.PostSelect>()({
   id: true,
   title: true,
-  text: true,
-  createdAt: true,
-  updatedAt: true,
+  content: true,
+  // createdAt: true,
+  // updatedAt: true,
 });
 
 export const postRouter = router({
@@ -49,9 +49,9 @@ export const postRouter = router({
               id: cursor,
             }
           : undefined,
-        orderBy: {
-          createdAt: 'desc',
-        },
+        // orderBy: {
+        //   createdAt: 'desc',
+        // },
       });
       let nextCursor: typeof cursor | undefined = undefined;
       if (items.length > limit) {

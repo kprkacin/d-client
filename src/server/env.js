@@ -49,4 +49,4 @@
 //   );
 //   process.exit(1);
 // }
-module.exports.env = env.data;
+module.exports.env = process.env;
