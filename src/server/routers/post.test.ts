@@ -10,7 +10,7 @@ test('add and get post', async () => {
   const caller = appRouter.createCaller(ctx);
 
   const input: inferProcedureInput<AppRouter['post']['add']> = {
-    text: 'hello test',
+    content: 'hello test',
     title: 'hello test',
   };
 

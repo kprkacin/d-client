@@ -17,6 +17,8 @@ const defaultPostSelect = Prisma.validator<Prisma.PostSelect>()({
   id: true,
   title: true,
   content: true,
+  author: true,
+  published: true,
   // createdAt: true,
   // updatedAt: true,
 });
@@ -92,14 +94,33 @@ export const postRouter = router({
       z.object({
         id: z.string().uuid().optional(),
         title: z.string().min(1).max(32),
-        text: z.string().min(1),
+        content: z.string().optional(),
+        published: z.boolean().optional(),
+        // authorId: z.string().uuid().optional(),
+        email: z.string().email().optional(),
       }),
     )
     .mutation(async ({ input }) => {
       const post = await prisma.post.create({
-        data: input,
+        data: {
+          id: input.id,
+          title: input.title,
+          content: input.content,
+          published: input.published,
+          author: { connect: { email: input.email } },
+        },
         select: defaultPostSelect,
       });
       return post;
     }),
 });
+
+/*
+
+  id        String  @id @default(cuid())
+  title     String
+  content   String?
+  published Boolean @default(false)
+  authorId  String?
+  author    User?   @relation(fields: [authorId], references: [id])
+*/

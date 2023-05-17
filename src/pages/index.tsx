@@ -1,12 +1,16 @@
+import { getSession, useSession } from 'next-auth/react';
 import { trpc } from '../utils/trpc';
 import { NextPageWithLayout } from './_app';
 import { inferProcedureInput } from '@trpc/server';
 import Link from 'next/link';
 import { Fragment } from 'react';
+import Header from '~/components/Header';
 import type { AppRouter } from '~/server/routers/_app';
 
 const IndexPage: NextPageWithLayout = () => {
   const utils = trpc.useContext();
+  const { data: session, status } = useSession();
+
   const postsQuery = trpc.post.list.useInfiniteQuery(
     {
       limit: 5,
@@ -35,6 +39,7 @@ const IndexPage: NextPageWithLayout = () => {
 
   return (
     <>
+      <Header />
       <h1>Welcome to your tRPC starter!</h1>
       <p>
         If you get stuck, check <a href="https://trpc.io">the docs</a>, write a
@@ -91,10 +96,12 @@ const IndexPage: NextPageWithLayout = () => {
           const $form = e.currentTarget;
           const values = Object.fromEntries(new FormData($form));
           type Input = inferProcedureInput<AppRouter['post']['add']>;
+
           //    ^?
           const input: Input = {
             title: values.title as string,
-            text: values.text as string,
+            content: values.text as string,
+            email: session?.user?.email as string,
           };
           try {
             await addPost.mutateAsync(input);
