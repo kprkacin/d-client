@@ -38,21 +38,22 @@ model ChatSession {
   id          String       @id @default(cuid())
   name        String
   authorId    String?
-  chatRecords ChatRecord[]
-  author      User?        @relation(fields: [authorId], references: [id])
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  chatRecords ChatRecord[]
+  author      User?        @relation(fields: [authorId], references: [id])
 }
 
 model ChatRecord {
   id            String       @id @default(cuid())
   paragraph     String
   ids           String[]
+  fullData      Json[]
   parentId      String?
   chatSessionId String?
-  chatSession   ChatSession? @relation(fields: [chatSessionId], references: [id])
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+  chatSession   ChatSession? @relation(fields: [chatSessionId], references: [id])
 }
 
 model Account {
