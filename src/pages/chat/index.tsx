@@ -1,5 +1,6 @@
 import {
   Anchor,
+  Button,
   Center,
   Container,
   ScrollArea,
@@ -12,6 +13,7 @@ import {
 import { type NextPageWithLayout } from "../_app";
 import { api } from "@/utils/api";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const useStyles = createStyles((theme) => ({
   progressBar: {
@@ -24,9 +26,38 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const ChatPage: NextPageWithLayout = () => {
-  const { data = [] } = api.chat.allChats.useQuery();
+  const { data = [], refetch } = api.chat.allChats.useQuery();
+  const router = useRouter();
 
   const { classes, theme } = useStyles();
+
+  const { mutate: createNewChat } = api.chat.newSession.useMutation({
+    onError: () => {
+      console.error("Error deleting comment");
+    },
+    onSuccess: (res) => {
+      void router.push(`/chat/${res.id}`);
+    },
+    onSettled: () => {
+      // upToDateCommentsQuery.refetch();
+    },
+  });
+  const { mutate: deleteChat } = api.chat.deleteSession.useMutation({
+    onError: () => {
+      console.error("Error deleting comment");
+    },
+    onSuccess: (res) => {
+      console.log(res);
+    },
+    onSettled: () => {
+      void refetch();
+      // upToDateCommentsQuery.refetch();
+    },
+  });
+
+  const addNewChat = () => {
+    createNewChat();
+  };
 
   const rows = data.map((row) => {
     return (
@@ -52,13 +83,25 @@ const ChatPage: NextPageWithLayout = () => {
             {row.createdAt.toDateString()}
           </Text>
         </td>
+        <td>
+          <Button
+            variant="outline"
+            color="red"
+            onClick={() => {
+              deleteChat({ id: row.id });
+            }}
+          >
+            Delete
+          </Button>
+        </td>
       </tr>
     );
   });
 
   return (
     <Container size="md">
-      <Center h="100vh">
+      <Center>
+        <Button onClick={addNewChat}>New Chat</Button>
         <ScrollArea>
           <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
             <thead>
@@ -68,6 +111,7 @@ const ChatPage: NextPageWithLayout = () => {
                 <th>Number of messages</th>
                 <th>Last Updated</th>
                 <th>Created At</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>{rows}</tbody>

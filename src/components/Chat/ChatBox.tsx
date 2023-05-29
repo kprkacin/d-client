@@ -22,6 +22,7 @@ const useStyles = createStyles((theme) => ({
     boxShadow: `0 8px 16px 0 ${
       theme.colors.slate?.[0] || theme.colors.blue[0]
     }`,
+    overflow: "scroll",
     // backdropFilter: 'blur( 12px )',
     // WebkitBackdropFilter: 'blur( 12px )',
     // borderRadius: '10px',
@@ -29,14 +30,19 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type Props = {};
+type Props = {
+  id: string;
+};
+
+const greetingMessage =
+  "Greetings! As a film and TV recommendation expert, I'm here to provide you with valuable insights and suggestions on the best movies and TV shows to suit your preferences. With a vast knowledge of various genres, eras, and styles, I can assist you in finding captivating entertainment options. Whether you're in the mood for thrilling action, heartwarming dramas, or side-splitting comedies, I've got you covered. Just let me know your preferences, and I'll curate a tailored list of recommendations to enhance your viewing experience. Get ready to explore the fascinating world of cinema and television with my expert guidance!";
 
 const ChatBox = (props: Props) => {
+  const { id } = props;
   const mutation = api.chat.ask.useMutation();
-  const chats = api.chat.allChats.useQuery();
-  const chat = api.chat.byId.useQuery({ id: "cli5w0av90006s8yfkfx9ley5" });
+  const chat = api.chat.byId.useQuery({ id });
 
-  console.log(chats.data, chat.data);
+  console.log(chat.data);
 
   const { classes, theme, cx } = useStyles();
   const { data: session, status } = useSession();
@@ -44,23 +50,30 @@ const ChatBox = (props: Props) => {
   const [message, setMessage] = React.useState("");
   const ask = (question: string) => {
     try {
-      const resp = mutation.mutate({
+      mutation.mutate({
         query: question,
-        // chatSessionId: "cli5w0av90006s8yfkfx9ley5",
+        chatSessionId: id,
       });
     } catch (error) {
       console.error(error);
     }
   };
+
   console.log("response", mutation);
   return (
-    <Paper shadow="md" miw="100%" mih={600} p="40px" className={classes.paper}>
+    <Paper shadow="md" miw="100%" h={900} p="40px" className={classes.paper}>
       <Stack justify="space-between" mih={600}>
         <Stack>
-          <TextBubble />
-          <TextBubble />
+          <TextBubble message={greetingMessage} />
+          {/* {chat.data?.chatRecords.map((record) => (
+            <>
+              <TextBubble message={record.paragraph} />
+              <RecommendationCarausel items={record.fullData as any[]} />{" "}
+            </>
+          ))} */}
+          {/* <TextBubble /> */}
         </Stack>
-        <Group>{/* <RecommendationCarausel /> */}</Group>
+
         <TextInput
           mb={0}
           style={{

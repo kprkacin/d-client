@@ -22,7 +22,9 @@ CREATE TABLE "Wishlist" (
 CREATE TABLE "WishlistRecord" (
     "id" TEXT NOT NULL,
     "mediaId" TEXT NOT NULL,
-    "wishlistId" TEXT,
+    "mediaType" TEXT NOT NULL,
+    "watchStatus" BOOLEAN NOT NULL DEFAULT false,
+    "wishlistId" TEXT NOT NULL,
 
     CONSTRAINT "WishlistRecord_pkey" PRIMARY KEY ("id")
 );
@@ -31,7 +33,7 @@ CREATE TABLE "WishlistRecord" (
 CREATE TABLE "ChatSession" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "authorId" TEXT,
+    "authorId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -44,8 +46,8 @@ CREATE TABLE "ChatRecord" (
     "paragraph" TEXT NOT NULL,
     "ids" TEXT[],
     "fullData" JSONB[],
-    "parentId" TEXT,
-    "chatSessionId" TEXT,
+    "role" TEXT,
+    "chatSessionId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -125,13 +127,13 @@ ALTER TABLE "Post" ADD CONSTRAINT "Post_authorId_fkey" FOREIGN KEY ("authorId") 
 ALTER TABLE "Wishlist" ADD CONSTRAINT "Wishlist_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "WishlistRecord" ADD CONSTRAINT "WishlistRecord_wishlistId_fkey" FOREIGN KEY ("wishlistId") REFERENCES "Wishlist"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "WishlistRecord" ADD CONSTRAINT "WishlistRecord_wishlistId_fkey" FOREIGN KEY ("wishlistId") REFERENCES "Wishlist"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ChatSession" ADD CONSTRAINT "ChatSession_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "ChatSession" ADD CONSTRAINT "ChatSession_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ChatRecord" ADD CONSTRAINT "ChatRecord_chatSessionId_fkey" FOREIGN KEY ("chatSessionId") REFERENCES "ChatSession"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "ChatRecord" ADD CONSTRAINT "ChatRecord_chatSessionId_fkey" FOREIGN KEY ("chatSessionId") REFERENCES "ChatSession"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

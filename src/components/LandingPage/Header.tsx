@@ -14,8 +14,8 @@ import {
   Collapse,
   ScrollArea,
   rem,
-} from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
   IconNotification,
   IconCode,
@@ -24,62 +24,59 @@ import {
   IconFingerprint,
   IconCoin,
   IconChevronDown,
-} from '@tabler/icons-react';
-import { useSession } from 'next-auth/react';
-import Link from 'next/link';
+} from "@tabler/icons-react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
   header: {
     backgroundColor:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark?.[6]
-        : theme.colors.blue?.[1],
-    color: theme.colorScheme === 'dark' ? theme.white : theme.white,
+      theme.colorScheme === "dark"
+        ? theme.colors.dark?.[8]
+        : theme.colors.gray?.[0],
   },
   link: {
-    display: 'flex',
-    alignItems: 'center',
-    height: '100%',
+    display: "flex",
+    alignItems: "center",
+    height: "100%",
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
-    textDecoration: 'none',
-    color: theme.white,
+    textDecoration: "none",
     fontWeight: 500,
     fontSize: theme.fontSizes.sm,
 
-    [theme.fn.smallerThan('sm')]: {
+    [theme.fn.smallerThan("sm")]: {
       height: rem(42),
-      display: 'flex',
-      alignItems: 'center',
-      width: '100%',
+      display: "flex",
+      alignItems: "center",
+      width: "100%",
     },
-
-    ...theme.fn.hover({
+    "&:hover": {
       backgroundColor:
-        theme.colorScheme === 'dark'
-          ? theme.colors.dark[6]
-          : theme.colors.gray[0],
-    }),
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[4]
+          : theme.colors.gray[4],
+    },
   },
 
   subLink: {
-    width: '100%',
+    width: "100%",
     padding: `${theme.spacing.xs} ${theme.spacing.md}`,
     borderRadius: theme.radius.md,
 
-    ...theme.fn.hover({
+    "&:hover": {
       backgroundColor:
-        theme.colorScheme === 'dark'
-          ? theme.colors.dark[7]
-          : theme.colors.gray[0],
-    }),
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[4]
+          : theme.colors.gray[4],
+    },
 
-    '&:active': theme.activeStyles,
+    "&:active": theme.activeStyles,
   },
 
   dropdownFooter: {
     backgroundColor:
-      theme.colorScheme === 'dark'
+      theme.colorScheme === "dark"
         ? theme.colors.dark[7]
         : theme.colors.gray[0],
     margin: `calc(${theme.spacing.md} * -1)`,
@@ -87,19 +84,19 @@ const useStyles = createStyles((theme) => ({
     padding: `${theme.spacing.md} calc(${theme.spacing.md} * 2)`,
     paddingBottom: theme.spacing.xl,
     borderTop: `${rem(1)} solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]
+      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[1]
     }`,
   },
 
   hiddenMobile: {
-    [theme.fn.smallerThan('sm')]: {
-      display: 'none',
+    [theme.fn.smallerThan("sm")]: {
+      display: "none",
     },
   },
 
   hiddenDesktop: {
-    [theme.fn.largerThan('sm')]: {
-      display: 'none',
+    [theme.fn.largerThan("sm")]: {
+      display: "none",
     },
   },
 }));
@@ -107,33 +104,33 @@ const useStyles = createStyles((theme) => ({
 const mockdata = [
   {
     icon: IconCode,
-    title: 'Open source',
-    description: 'This Pokémon’s cry is very loud and distracting',
+    title: "Open source",
+    description: "This Pokémon’s cry is very loud and distracting",
   },
   {
     icon: IconCoin,
-    title: 'Free for everyone',
-    description: 'The fluid of Smeargle’s tail secretions changes',
+    title: "Free for everyone",
+    description: "The fluid of Smeargle’s tail secretions changes",
   },
   {
     icon: IconBook,
-    title: 'Documentation',
-    description: 'Yanma is capable of seeing 360 degrees without',
+    title: "Documentation",
+    description: "Yanma is capable of seeing 360 degrees without",
   },
   {
     icon: IconFingerprint,
-    title: 'Security',
-    description: 'The shell’s rounded shape and the grooves on its.',
+    title: "Security",
+    description: "The shell’s rounded shape and the grooves on its.",
   },
   {
     icon: IconChartPie3,
-    title: 'Analytics',
-    description: 'This Pokémon uses its flying ability to quickly chase',
+    title: "Analytics",
+    description: "This Pokémon uses its flying ability to quickly chase",
   },
   {
     icon: IconNotification,
-    title: 'Notifications',
-    description: 'Combusken battles with the intensely hot flames it spews',
+    title: "Notifications",
+    description: "Combusken battles with the intensely hot flames it spews",
   },
 ];
 
@@ -165,11 +162,11 @@ const Header = () => {
   return (
     <Box pb={120}>
       <Mheader height={60} px="md" className={classes.header}>
-        <Group position="apart" sx={{ height: '100%' }}>
+        <Group position="apart" sx={{ height: "100%" }}>
           {/* <MantineLogo size={30} /> */}
 
           <Group
-            sx={{ height: '100%' }}
+            sx={{ height: "100%" }}
             spacing={0}
             className={classes.hiddenMobile}
           >
@@ -188,8 +185,8 @@ const Header = () => {
           <Group className={classes.hiddenMobile}>
             {!session ? (
               <Link href="/api/auth/signin">
-                {' '}
-                <Button onClick={() => {}} disabled={status === 'loading'}>
+                {" "}
+                <Button onClick={() => {}} disabled={status === "loading"}>
                   Log in
                 </Button>
               </Link>
@@ -230,7 +227,7 @@ const Header = () => {
         <ScrollArea h={`calc(100vh - ${rem(60)})`} mx="-md">
           <Divider
             my="sm"
-            color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'}
+            color={theme.colorScheme === "dark" ? "dark.5" : "gray.1"}
           />
 
           <a href="#" className={classes.link}>
@@ -254,7 +251,7 @@ const Header = () => {
 
           <Divider
             my="sm"
-            color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'}
+            color={theme.colorScheme === "dark" ? "dark.5" : "gray.1"}
           />
 
           <Group position="center" grow pb="xl" px="md">

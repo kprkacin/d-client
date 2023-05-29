@@ -37,11 +37,13 @@
     "@trpc/server": "^10.26.0",
     "dayjs": "^1.11.7",
     "embla-carousel-react": "8.0.0-rc05",
+    "framer-motion": "^10.12.16",
     "next": "^13.4.2",
     "next-auth": "^4.22.1",
     "openai": "^3.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-youtube": "^10.1.0",
     "superjson": "1.12.2",
     "zod": "^3.21.4"
   },

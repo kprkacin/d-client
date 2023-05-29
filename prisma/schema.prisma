@@ -28,32 +28,34 @@ model Wishlist {
 }
 
 model WishlistRecord {
-  id         String    @id @default(cuid())
-  mediaId    String
-  wishlistId String?
-  wishlist   Wishlist? @relation(fields: [wishlistId], references: [id])
+  id          String   @id @default(cuid())
+  mediaId     String
+  mediaType   String
+  watchStatus Boolean  @default(false)
+  wishlistId  String
+  wishlist    Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
 }
 
 model ChatSession {
   id          String       @id @default(cuid())
   name        String
-  authorId    String?
+  authorId    String
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   chatRecords ChatRecord[]
-  author      User?        @relation(fields: [authorId], references: [id])
+  author      User         @relation(fields: [authorId], references: [id])
 }
 
 model ChatRecord {
-  id            String       @id @default(cuid())
+  id            String      @id @default(cuid())
   paragraph     String
   ids           String[]
   fullData      Json[]
-  parentId      String?
-  chatSessionId String?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  chatSession   ChatSession? @relation(fields: [chatSessionId], references: [id])
+  role          String?
+  chatSessionId String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  chatSession   ChatSession @relation(fields: [chatSessionId], references: [id], onDelete: Cascade)
 }
 
 model Account {

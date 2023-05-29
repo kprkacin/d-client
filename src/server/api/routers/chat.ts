@@ -19,6 +19,7 @@ const defaultChatRecordSelect = Prisma.validator<Prisma.ChatRecordSelect>()({
   updatedAt: true,
   paragraph: true,
   ids: true,
+  role: true,
   chatSessionId: true,
 });
 
@@ -47,8 +48,36 @@ export const chatRouter = createTRPCRouter({
 
     return userSessions;
   }),
+  deleteSession: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+      const { id } = input;
+      await prisma.chatSession.delete({
+        where: { id },
+        select: defaultChatSelect,
+      });
+      return true;
+    }),
   newSession: protectedProcedure.mutation(async ({ ctx }) => {
     const { prisma, session } = ctx;
+    const emptyChat = await prisma.chatSession.findFirst({
+      where: {
+        chatRecords: {
+          none: {},
+        },
+      },
+    });
+
+    console.log("emptyChat", emptyChat);
+    if (emptyChat?.id) {
+      return emptyChat;
+    }
+
     return await prisma.chatSession.create({
       data: {
         name: "Chat Session",
@@ -97,7 +126,7 @@ export const chatRouter = createTRPCRouter({
       const data = await Promise.allSettled(
         ids?.map(async (id) => {
           const result = await fetch(
-            `http://www.omdbapi.com/?i=${id}&plot=full&apikey=${env.DEV_IMDB_KEY}`
+            `${env.MOVIE_API_URL}3/find/${id}?external_source=imdb_id&api_key=${env.DEV_IMDB_KEY}`
           );
 
           return result.json();
@@ -121,27 +150,54 @@ export const chatRouter = createTRPCRouter({
             },
           },
         });
-        const record = await prisma.chatRecord.create({
+        await prisma.chatRecord.create({
+          data: {
+            paragraph: query,
+            role: "user",
+            ids: [],
+            fullData: [],
+            chatSession: { connect: { id: chatSession.id } },
+          },
+          select: defaultChatRecordSelect,
+        });
+        await prisma.chatRecord.create({
           data: {
             paragraph: firstParagraph,
+            role: "assistant",
             ids,
             fullData,
             chatSession: { connect: { id: chatSession.id } },
           },
           select: defaultChatRecordSelect,
         });
-        return record;
+        return await prisma.chatSession.findUnique({
+          where: { id: chatSession.id },
+        });
       } else {
-        const record = await prisma.chatRecord.create({
+        await prisma.chatRecord.create({
+          data: {
+            paragraph: query,
+            role: "user",
+            ids: [],
+            fullData: [],
+            chatSession: { connect: { id: chatSessionId } },
+          },
+          select: defaultChatRecordSelect,
+        });
+        await prisma.chatRecord.create({
           data: {
             paragraph: firstParagraph,
             ids,
+            role: "assistant",
+
             fullData,
             chatSession: { connect: { id: chatSessionId } },
           },
           select: defaultChatRecordSelect,
         });
-        return record;
+        return prisma.chatSession.findUnique({
+          where: { id: chatSessionId },
+        });
       }
     }),
 });

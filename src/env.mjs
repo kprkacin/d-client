@@ -23,6 +23,7 @@ export const env = createEnv({
     GOOGLE_SECRET: z.string(),
     SECRET: z.string().min(1),
     DEV_IMDB_KEY: z.string().min(1),
+    MOVIE_API_URL: z.string().min(1),
   },
 
   /**
@@ -50,7 +51,8 @@ export const env = createEnv({
     GOOGLE_ID: process.env.GOOGLE_ID,
     GOOGLE_SECRET: process.env.GOOGLE_SECRET,
     SECRET: process.env.SECRET,
-    DEV_IMDB_KEY: process.env.DEV_IMDB_KEY,
+    DEV_IMDB_KEY: process.env.IMDB_KEY,
+    MOVIE_API_URL: process.env.MOVIE_API_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

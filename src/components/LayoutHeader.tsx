@@ -15,8 +15,8 @@ import {
   ScrollArea,
   rem,
   Affix,
-} from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
   IconNotification,
   IconCode,
@@ -25,62 +25,62 @@ import {
   IconFingerprint,
   IconCoin,
   IconChevronDown,
-} from '@tabler/icons-react';
-import { useSession } from 'next-auth/react';
-import Link from 'next/link';
+} from "@tabler/icons-react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
   header: {
     backgroundColor:
-      theme.colorScheme === 'dark'
+      theme.colorScheme === "dark"
         ? theme.colors.dark?.[6]
-        : theme.colors.blue?.[1],
+        : theme.colors.gray?.[9],
     color: theme.white,
   },
   link: {
-    display: 'flex',
-    alignItems: 'center',
-    height: '100%',
+    display: "flex",
+    alignItems: "center",
+    height: "100%",
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
-    textDecoration: 'none',
+    textDecoration: "none",
     color: theme.white,
     fontWeight: 500,
     fontSize: theme.fontSizes.sm,
 
-    [theme.fn.smallerThan('sm')]: {
+    [theme.fn.smallerThan("sm")]: {
       height: rem(42),
-      display: 'flex',
-      alignItems: 'center',
-      width: '100%',
+      display: "flex",
+      alignItems: "center",
+      width: "100%",
     },
 
     ...theme.fn.hover({
       backgroundColor:
-        theme.colorScheme === 'dark'
+        theme.colorScheme === "dark"
           ? theme.colors.dark[6]
           : theme.colors.gray[0],
     }),
   },
 
   subLink: {
-    width: '100%',
+    width: "100%",
     padding: `${theme.spacing.xs} ${theme.spacing.md}`,
     borderRadius: theme.radius.md,
 
     ...theme.fn.hover({
       backgroundColor:
-        theme.colorScheme === 'dark'
+        theme.colorScheme === "dark"
           ? theme.colors.dark[7]
           : theme.colors.gray[0],
     }),
 
-    '&:active': theme.activeStyles,
+    "&:active": theme.activeStyles,
   },
 
   dropdownFooter: {
     backgroundColor:
-      theme.colorScheme === 'dark'
+      theme.colorScheme === "dark"
         ? theme.colors.dark[7]
         : theme.colors.gray[0],
     margin: `calc(${theme.spacing.md} * -1)`,
@@ -88,28 +88,28 @@ const useStyles = createStyles((theme) => ({
     padding: `${theme.spacing.md} calc(${theme.spacing.md} * 2)`,
     paddingBottom: theme.spacing.xl,
     borderTop: `${rem(1)} solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]
+      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[1]
     }`,
   },
 
   hiddenMobile: {
-    [theme.fn.smallerThan('sm')]: {
-      display: 'none',
+    [theme.fn.smallerThan("sm")]: {
+      display: "none",
     },
   },
 
   hiddenDesktop: {
-    [theme.fn.largerThan('sm')]: {
-      display: 'none',
+    [theme.fn.largerThan("sm")]: {
+      display: "none",
     },
   },
   mobileButton: {
     borderRadius: 0,
     borderRight: `1px solid ${theme.colors.gray[1]}`,
     borderTop: `1px solid ${theme.colors.gray[1]}`,
-    width: '33.3%',
+    width: "33.3%",
     [`&:nth-child(3)`]: {
-      borderRight: 'none',
+      borderRight: "none",
     },
   },
 }));
@@ -117,33 +117,33 @@ const useStyles = createStyles((theme) => ({
 const mockdata = [
   {
     icon: IconCode,
-    title: 'Open source',
-    description: 'This Pokémon’s cry is very loud and distracting',
+    title: "Open source",
+    description: "This Pokémon’s cry is very loud and distracting",
   },
   {
     icon: IconCoin,
-    title: 'Free for everyone',
-    description: 'The fluid of Smeargle’s tail secretions changes',
+    title: "Free for everyone",
+    description: "The fluid of Smeargle’s tail secretions changes",
   },
   {
     icon: IconBook,
-    title: 'Documentation',
-    description: 'Yanma is capable of seeing 360 degrees without',
+    title: "Documentation",
+    description: "Yanma is capable of seeing 360 degrees without",
   },
   {
     icon: IconFingerprint,
-    title: 'Security',
-    description: 'The shell’s rounded shape and the grooves on its.',
+    title: "Security",
+    description: "The shell’s rounded shape and the grooves on its.",
   },
   {
     icon: IconChartPie3,
-    title: 'Analytics',
-    description: 'This Pokémon uses its flying ability to quickly chase',
+    title: "Analytics",
+    description: "This Pokémon uses its flying ability to quickly chase",
   },
   {
     icon: IconNotification,
-    title: 'Notifications',
-    description: 'Combusken battles with the intensely hot flames it spews',
+    title: "Notifications",
+    description: "Combusken battles with the intensely hot flames it spews",
   },
 ];
 
@@ -179,10 +179,10 @@ const LayoutHeader = () => {
         px="md"
         className={cx(classes.header, classes.hiddenMobile)}
       >
-        <Group position="apart" sx={{ height: '100%' }}>
+        <Group position="apart" sx={{ height: "100%" }}>
           {/* <MantineLogo size={30} /> */}
 
-          <Group sx={{ height: '100%' }} spacing={0}>
+          <Group sx={{ height: "100%" }} spacing={0}>
             <a href="#" className={classes.link}>
               Home
             </a>
@@ -194,7 +194,7 @@ const LayoutHeader = () => {
 
           <Group className={classes.hiddenMobile}>
             {!session ? (
-              <Button onClick={() => {}} disabled={status === 'loading'}>
+              <Button onClick={() => {}} disabled={status === "loading"}>
                 Log in
               </Button>
             ) : (
@@ -216,24 +216,24 @@ const LayoutHeader = () => {
           className={cx(classes.header, classes.hiddenDesktop)}
           spacing={0}
         >
-          {' '}
+          {" "}
           <Button
             onClick={() => {}}
-            disabled={status === 'loading'}
+            disabled={status === "loading"}
             className={classes.mobileButton}
           >
             Log in
           </Button>
           <Button
             onClick={() => {}}
-            disabled={status === 'loading'}
+            disabled={status === "loading"}
             className={classes.mobileButton}
           >
             Log in
           </Button>
           <Button
             onClick={() => {}}
-            disabled={status === 'loading'}
+            disabled={status === "loading"}
             className={classes.mobileButton}
           >
             Log in
