@@ -1,15 +1,15 @@
-import { Container, createStyles } from '@mantine/core';
-import Head from 'next/head';
-import { ReactNode } from 'react';
-import Header from './Header';
+import { Container, createStyles } from "@mantine/core";
+import Head from "next/head";
+import { type ReactNode } from "react";
+import Header from "./Header";
 
 type HeroLayoutProps = { children: ReactNode; InnerHeader?: ReactNode };
 const useStyles = createStyles((theme) => ({
   body: {
-    minHeight: '100vh',
-    minWidth: '100vw',
+    minHeight: "100vh",
+    minWidth: "100vw",
     backgroundColor:
-      theme.colorScheme === 'dark'
+      theme.colorScheme === "dark"
         ? theme.colors.pastelGreen?.[6]
         : theme.colors.pastelGreen?.[3],
   },

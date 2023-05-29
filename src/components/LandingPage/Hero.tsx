@@ -1,6 +1,5 @@
 import {
   createStyles,
-  Image,
   Container,
   Title,
   Button,
@@ -9,14 +8,13 @@ import {
   List,
   ThemeIcon,
   rem,
-} from '@mantine/core';
-import { IconCheck } from '@tabler/icons-react';
-import image from './image.svg';
+} from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 
 const useStyles = createStyles((theme) => ({
   inner: {
-    display: 'flex',
-    justifyContent: 'space-between',
+    display: "flex",
+    justifyContent: "space-between",
     paddingTop: `calc(${theme.spacing.xl} * 4)`,
     paddingBottom: `calc(${theme.spacing.xl} * 4)`,
   },
@@ -25,26 +23,26 @@ const useStyles = createStyles((theme) => ({
     maxWidth: rem(480),
     marginRight: `calc(${theme.spacing.xl} * 3)`,
 
-    [theme.fn.smallerThan('md')]: {
-      maxWidth: '100%',
+    [theme.fn.smallerThan("md")]: {
+      maxWidth: "100%",
       marginRight: 0,
     },
   },
 
   title: {
-    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+    color: theme.colorScheme === "dark" ? theme.white : theme.black,
+    fontFamily: `Greycliff CF`,
     fontSize: rem(44),
     lineHeight: 1.2,
     fontWeight: 900,
 
-    [theme.fn.smallerThan('xs')]: {
+    [theme.fn.smallerThan("xs")]: {
       fontSize: rem(28),
     },
   },
 
   control: {
-    [theme.fn.smallerThan('xs')]: {
+    [theme.fn.smallerThan("xs")]: {
       flex: 1,
     },
   },
@@ -52,15 +50,15 @@ const useStyles = createStyles((theme) => ({
   image: {
     flex: 1,
 
-    [theme.fn.smallerThan('md')]: {
-      display: 'none',
+    [theme.fn.smallerThan("md")]: {
+      display: "none",
     },
   },
 
   highlight: {
-    position: 'relative',
+    position: "relative",
     backgroundColor: theme.fn.variant({
-      variant: 'light',
+      variant: "light",
       color: theme.primaryColor,
     }).background,
     borderRadius: theme.radius.sm,
@@ -76,7 +74,7 @@ const Hero = () => {
         <div className={classes.inner}>
           <div className={classes.content}>
             <Title className={classes.title}>
-              A <span className={classes.highlight}>modern KURAC</span> React{' '}
+              A <span className={classes.highlight}>modern KURAC</span> React{" "}
               <br /> components library
             </Title>
             <Text color="dimmed" mt="md">

@@ -1,19 +1,13 @@
 import {
   ActionIcon,
-  Affix,
-  Group,
   Paper,
   Stack,
   TextInput,
   createStyles,
-  rem,
 } from "@mantine/core";
 import React from "react";
 import TextBubble from "./TextBubble";
 import { IconSend } from "@tabler/icons-react";
-import MovieRecommendationCard from "./Recommendations/MovieRecommendationCard";
-import RecommendationCarausel from "./Recommendations/RecommendationCarausel";
-import { useSession } from "next-auth/react";
 import { api } from "@/utils/api";
 
 const useStyles = createStyles((theme) => ({
@@ -44,8 +38,7 @@ const ChatBox = (props: Props) => {
 
   console.log(chat.data);
 
-  const { classes, theme, cx } = useStyles();
-  const { data: session, status } = useSession();
+  const { classes } = useStyles();
 
   const [message, setMessage] = React.useState("");
   const ask = (question: string) => {

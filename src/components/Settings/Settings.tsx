@@ -3,9 +3,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconAdjustments } from "@tabler/icons-react";
 import ColorSchemeToggle from "./ColorSchemeToggle";
 
-type Props = {};
-
-const Settings = (props: Props) => {
+const Settings = () => {
   const [opened, { toggle, close }] = useDisclosure(false);
 
   return (

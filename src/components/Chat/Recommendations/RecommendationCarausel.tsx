@@ -1,13 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { Carousel, Embla } from "@mantine/carousel";
-import {
-  Box,
-  Progress,
-  Paper,
-  rem,
-  createStyles,
-  Accordion,
-} from "@mantine/core";
+import { Carousel, type Embla } from "@mantine/carousel";
+import { Progress, Paper, rem, createStyles, Accordion } from "@mantine/core";
 import MovieRecommendationCard from "./MovieRecommendationCard";
 import { useDisclosure } from "@mantine/hooks";
 import TrailerModal from "./TrailerModal";
@@ -92,7 +85,7 @@ type Props = {
 const RecommendationCarausel = (props: Props) => {
   const { items = [] } = props;
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [opened, { open, close }] = useDisclosure(false);
+  const [opened, { close }] = useDisclosure(false);
 
   const [embla, setEmbla] = useState<Embla | null>(null);
   const { classes } = useStyles();

@@ -12,7 +12,7 @@ const TrailerModal = (props: Props) => {
   const { opened, onClose, id } = props;
   return (
     <Modal opened={opened} onClose={onClose} title="Trailer" size="xl">
-      <YouTube videoId={"naQr0uTrH_s"} />
+      <YouTube videoId={id} />
     </Modal>
   );
 };

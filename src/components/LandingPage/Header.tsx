@@ -185,10 +185,7 @@ const Header = () => {
           <Group className={classes.hiddenMobile}>
             {!session ? (
               <Link href="/api/auth/signin">
-                {" "}
-                <Button onClick={() => {}} disabled={status === "loading"}>
-                  Log in
-                </Button>
+                <Button disabled={status === "loading"}>Log in</Button>
               </Link>
             ) : (
               <>
@@ -198,7 +195,7 @@ const Header = () => {
                 <Link href="/chat">
                   <Button>Go To Chat</Button>
                 </Link>
-                <Button onClick={() => {}}>Log out</Button>
+                <Button>Log out</Button>
               </>
             )}
           </Group>

@@ -5,17 +5,10 @@ import {
   Group,
   Badge,
   createStyles,
-  Center,
   Button,
   rem,
   Stack,
 } from "@mantine/core";
-import {
-  IconGasStation,
-  IconGauge,
-  IconManualGearbox,
-  IconUsers,
-} from "@tabler/icons-react";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -59,12 +52,6 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const mockdata = [
-  { label: "4 passengers", icon: IconUsers },
-  { label: "100 km/h in 4 seconds", icon: IconGauge },
-  { label: "Automatic gearbox", icon: IconManualGearbox },
-  { label: "Electric", icon: IconGasStation },
-];
 type Props = {
   item: {
     DVD: string;
@@ -103,12 +90,6 @@ type Props = {
 const MovieRecommendationCard = (props: Props) => {
   const { item } = props;
   const { classes } = useStyles();
-  const features = mockdata.map((feature) => (
-    <Center key={feature.label}>
-      <feature.icon size="1.05rem" className={classes.icon} stroke={1.5} />
-      <Text size="xs">{feature.label}</Text>
-    </Center>
-  ));
 
   return (
     <Card radius="md" className={classes.card}>

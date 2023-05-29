@@ -6,13 +6,7 @@ import {
   UnstyledButton,
   Text,
   ThemeIcon,
-  Divider,
-  Center,
   Box,
-  Burger,
-  Drawer,
-  Collapse,
-  ScrollArea,
   rem,
   Affix,
 } from "@mantine/core";
@@ -24,7 +18,6 @@ import {
   IconChartPie3,
   IconFingerprint,
   IconCoin,
-  IconChevronDown,
 } from "@tabler/icons-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -33,9 +26,8 @@ const useStyles = createStyles((theme) => ({
   header: {
     backgroundColor:
       theme.colorScheme === "dark"
-        ? theme.colors.dark?.[6]
-        : theme.colors.gray?.[9],
-    color: theme.white,
+        ? theme.colors.dark?.[8]
+        : theme.colors.gray?.[0],
   },
   link: {
     display: "flex",
@@ -44,7 +36,6 @@ const useStyles = createStyles((theme) => ({
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
     textDecoration: "none",
-    color: theme.white,
     fontWeight: 500,
     fontSize: theme.fontSizes.sm,
 
@@ -54,13 +45,12 @@ const useStyles = createStyles((theme) => ({
       alignItems: "center",
       width: "100%",
     },
-
-    ...theme.fn.hover({
+    "&:hover": {
       backgroundColor:
         theme.colorScheme === "dark"
-          ? theme.colors.dark[6]
-          : theme.colors.gray[0],
-    }),
+          ? theme.colors.dark[4]
+          : theme.colors.gray[4],
+    },
   },
 
   subLink: {
@@ -68,12 +58,12 @@ const useStyles = createStyles((theme) => ({
     padding: `${theme.spacing.xs} ${theme.spacing.md}`,
     borderRadius: theme.radius.md,
 
-    ...theme.fn.hover({
+    "&:hover": {
       backgroundColor:
         theme.colorScheme === "dark"
-          ? theme.colors.dark[7]
-          : theme.colors.gray[0],
-    }),
+          ? theme.colors.dark[4]
+          : theme.colors.gray[4],
+    },
 
     "&:active": theme.activeStyles,
   },
@@ -194,9 +184,7 @@ const LayoutHeader = () => {
 
           <Group className={classes.hiddenMobile}>
             {!session ? (
-              <Button onClick={() => {}} disabled={status === "loading"}>
-                Log in
-              </Button>
+              <Button disabled={status === "loading"}>Log in</Button>
             ) : (
               <>
                 <Text>
@@ -205,7 +193,7 @@ const LayoutHeader = () => {
                 <Link href="/chat">
                   <Button>Go To Chat</Button>
                 </Link>
-                <Button onClick={() => {}}>Log out</Button>
+                <Button>Log out</Button>
               </>
             )}
           </Group>
@@ -218,21 +206,18 @@ const LayoutHeader = () => {
         >
           {" "}
           <Button
-            onClick={() => {}}
             disabled={status === "loading"}
             className={classes.mobileButton}
           >
             Log in
           </Button>
           <Button
-            onClick={() => {}}
             disabled={status === "loading"}
             className={classes.mobileButton}
           >
             Log in
           </Button>
           <Button
-            onClick={() => {}}
             disabled={status === "loading"}
             className={classes.mobileButton}
           >

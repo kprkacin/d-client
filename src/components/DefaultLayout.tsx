@@ -1,6 +1,6 @@
-import { Container, createStyles } from "@mantine/core";
+import { Container } from "@mantine/core";
 import Head from "next/head";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import LayoutHeader from "./LayoutHeader";
 
 type DefaultLayoutProps = { children: ReactNode; InnerHeader?: ReactNode };
