@@ -1,3 +1,10 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import AddToWishlistMenu from "@/components/Wishlist/AddToWishlistMenu";
+import { posterSizes } from "@/utils/consts";
 import {
   Card,
   Image,
@@ -5,7 +12,6 @@ import {
   Group,
   Badge,
   createStyles,
-  Button,
   rem,
   Stack,
 } from "@mantine/core";
@@ -22,7 +28,6 @@ const useStyles = createStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-
     overflow: "hidden",
   },
 
@@ -53,38 +58,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 type Props = {
-  item: {
-    DVD: string;
-    Plot: string;
-    Type: string;
-    Year: string;
-    Genere: string;
-    Rated: string;
-    Title: string;
-    Actors: string;
-    Awards: string;
-    Poster: string;
-    Writer: string;
-    imdbID: string;
-    Country: string;
-    Runtime: string;
-    Ratings: [
-      {
-        Source: string;
-        Value: string;
-      }
-    ];
-    Website: string;
-    Director: string;
-    Language: string;
-    Released: string;
-    Response: string;
-    BoxOffice: string;
-    Metascore: string;
-    imdbVotes: string;
-    Production: string;
-    imdbRating: string;
-  };
+  item: any;
 };
 
 const MovieRecommendationCard = (props: Props) => {
@@ -94,19 +68,22 @@ const MovieRecommendationCard = (props: Props) => {
   return (
     <Card radius="md" className={classes.card}>
       <Card.Section className={classes.imageSection}>
-        <Image src={item.Poster} alt={item.Title} h={390} />
+        <Image
+          src={`https://image.tmdb.org/t/p/${posterSizes.w500}/${item?.poster_path}`}
+          alt={item.title}
+        />
       </Card.Section>
 
       <Group position="apart" mt="md">
         <Stack w="90%">
           <Text fw={500} h={60}>
-            {item.Title}
+            {item?.title || item?.name}
           </Text>
           <Text fz="xs" c="dimmed" h={200} className={classes.plot} truncate>
-            {item.Plot}
+            {item.overview}
           </Text>
         </Stack>
-        <Badge variant="outline">{item.imdbRating}</Badge>
+        <Badge variant="outline">{item.vote_average}</Badge>
       </Group>
 
       <Card.Section className={classes.section} mt="md">
@@ -128,9 +105,11 @@ const MovieRecommendationCard = (props: Props) => {
             </Text>
           </div>
 
-          <Button radius="xl" style={{ flex: 1 }}>
-            Rent now
-          </Button>
+          <AddToWishlistMenu
+            mediaId={item.id}
+            mediaType={item.media_type}
+            position="top"
+          />
         </Group>
       </Card.Section>
     </Card>

@@ -21,6 +21,7 @@ import {
 } from "@tabler/icons-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import DefaultSideNav from "./DefaultSideNav";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -98,7 +99,7 @@ const useStyles = createStyles((theme) => ({
     borderRight: `1px solid ${theme.colors.gray[1]}`,
     borderTop: `1px solid ${theme.colors.gray[1]}`,
     width: "33.3%",
-    [`&:nth-child(3)`]: {
+    [`&:nth-of-type(3)`]: {
       borderRight: "none",
     },
   },
@@ -164,41 +165,7 @@ const LayoutHeader = () => {
 
   return (
     <Box>
-      <Mheader
-        height={60}
-        px="md"
-        className={cx(classes.header, classes.hiddenMobile)}
-      >
-        <Group position="apart" sx={{ height: "100%" }}>
-          {/* <MantineLogo size={30} /> */}
-
-          <Group sx={{ height: "100%" }} spacing={0}>
-            <a href="#" className={classes.link}>
-              Home
-            </a>
-
-            <a href="#" className={classes.link}>
-              Learn
-            </a>
-          </Group>
-
-          <Group className={classes.hiddenMobile}>
-            {!session ? (
-              <Button disabled={status === "loading"}>Log in</Button>
-            ) : (
-              <>
-                <Text>
-                  {session?.user?.name} ({session?.user?.email})
-                </Text>
-                <Link href="/chat">
-                  <Button>Go To Chat</Button>
-                </Link>
-                <Button>Log out</Button>
-              </>
-            )}
-          </Group>
-        </Group>
-      </Mheader>
+      <DefaultSideNav />
       <Affix position={{ bottom: 0, right: 0 }} w="100%">
         <Group
           className={cx(classes.header, classes.hiddenDesktop)}

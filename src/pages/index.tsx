@@ -3,6 +3,11 @@ import { type NextPageWithLayout } from "./_app";
 import Hero from "@/components/LandingPage/Hero";
 import { Container } from "@mantine/core";
 import { HeroLayout } from "@/components/LandingPage/HeroLayout";
+import { ContactUs } from "@/components/LandingPage/Contact";
+import { FaqWithImage } from "@/components/LandingPage/Faq";
+import { FeaturesCards } from "@/components/LandingPage/Features";
+import { EmailBanner } from "@/components/LandingPage/Newsletter";
+import { Testimonials } from "@/components/LandingPage/Testimonials";
 
 const IndexPage: NextPageWithLayout = () => {
   const { data: session, status } = useSession();
@@ -19,9 +24,12 @@ const IndexPage: NextPageWithLayout = () => {
     <Container fluid>
       {/* <Header /> */}
       {/* <Header /> */}
-      <Container size="md">
-        <Hero />
-      </Container>
+      <Hero />
+      <FeaturesCards />
+      <Testimonials />
+      <FaqWithImage />
+      <EmailBanner />
+      <ContactUs />
     </Container>
   );
 };

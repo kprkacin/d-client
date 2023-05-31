@@ -1,27 +1,26 @@
+/* eslint-disable react/no-unescaped-entities */
 import {
   createStyles,
+  Image,
   Container,
   Title,
   Button,
   Group,
   Text,
-  List,
-  ThemeIcon,
-  rem,
 } from "@mantine/core";
-import { IconCheck } from "@tabler/icons-react";
 
 const useStyles = createStyles((theme) => ({
   inner: {
+    position: "relative",
     display: "flex",
     justifyContent: "space-between",
-    paddingTop: `calc(${theme.spacing.xl} * 4)`,
-    paddingBottom: `calc(${theme.spacing.xl} * 4)`,
+    paddingTop: "2rem",
+    paddingBottom: "6rem",
   },
 
   content: {
-    maxWidth: rem(480),
-    marginRight: `calc(${theme.spacing.xl} * 3)`,
+    maxWidth: 580,
+    marginRight: theme.spacing.xl,
 
     [theme.fn.smallerThan("md")]: {
       maxWidth: "100%",
@@ -30,14 +29,12 @@ const useStyles = createStyles((theme) => ({
   },
 
   title: {
-    color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    fontFamily: `Greycliff CF`,
-    fontSize: rem(44),
+    fontSize: 44,
     lineHeight: 1.2,
     fontWeight: 900,
 
     [theme.fn.smallerThan("xs")]: {
-      fontSize: rem(28),
+      fontSize: 28,
     },
   },
 
@@ -49,7 +46,13 @@ const useStyles = createStyles((theme) => ({
 
   image: {
     flex: 1,
-
+    position: "absolute",
+    width: "40%",
+    right: 0,
+    top: 0,
+    left: "600px",
+    minWidth: 600,
+    maxWidth: 750,
     [theme.fn.smallerThan("md")]: {
       display: "none",
     },
@@ -59,72 +62,45 @@ const useStyles = createStyles((theme) => ({
     position: "relative",
     backgroundColor: theme.fn.variant({
       variant: "light",
-      color: theme.primaryColor,
+      color: theme.fn.primaryColor(),
     }).background,
     borderRadius: theme.radius.sm,
-    padding: `${rem(4)} ${rem(12)}`,
+    padding: "4px 12px",
   },
 }));
 
 const Hero = () => {
   const { classes } = useStyles();
   return (
-    <div>
-      <Container>
-        <div className={classes.inner}>
-          <div className={classes.content}>
-            <Title className={classes.title}>
-              A <span className={classes.highlight}>modern KURAC</span> React{" "}
-              <br /> components library
-            </Title>
-            <Text color="dimmed" mt="md">
-              Build fully functional accessible web applications faster than
-              ever – Mantine includes more than 120 customizable components and
-              hooks to cover you in any situation
-            </Text>
+    <Container>
+      <div className={classes.inner}>
+        <div className={classes.content}>
+          <Title className={classes.title}>
+            Introducing{" "}
+            <span className={classes.highlight}>AR Business Cards</span>, the
+            easiest way to make a lasting impression.
+          </Title>
+          <Text color="dimmed" mt="md">
+            Our software allows you to create stunning AR business cards that
+            come to life when scanned. Imagine being able to showcase a
+            360-degree view of your product, a video of your latest project, or
+            a virtual tour of your office - all on a single business card. And
+            the best part? It's easy to share with anyone, anywhere. Simply scan
+            the QR code on the back of the card and experience the future of
+            networking today. Try AR Business Cards now and take your business
+            to the next level.
+          </Text>
 
-            <List
-              mt={30}
-              spacing="sm"
-              size="sm"
-              icon={
-                <ThemeIcon size={20} radius="xl">
-                  <IconCheck size={rem(12)} stroke={1.5} />
-                </ThemeIcon>
-              }
-            >
-              <List.Item>
-                <b>TypeScript based</b> – build type safe applications, all
-                components and hooks export types
-              </List.Item>
-              <List.Item>
-                <b>Free and open source</b> – all packages have MIT license, you
-                can use Mantine in any project
-              </List.Item>
-              <List.Item>
-                <b>No annoying focus ring</b> – focus ring will appear only when
-                user navigates with keyboard
-              </List.Item>
-            </List>
-
-            <Group mt={30}>
-              <Button radius="xl" size="md" className={classes.control}>
-                Get started
-              </Button>
-              <Button
-                variant="default"
-                radius="xl"
-                size="md"
-                className={classes.control}
-              >
-                Source code
-              </Button>
-            </Group>
-          </div>
-          {/* <Image src={image.src} className={classes.image} /> */}
+          <Group mt={30}>
+            <Button radius="xl" size="md" className={classes.control}>
+              Try Demo
+            </Button>
+          </Group>
         </div>
-      </Container>
-    </div>
+        <Image src="hero.svg" className={classes.image} />
+      </div>
+    </Container>
   );
 };
+
 export default Hero;

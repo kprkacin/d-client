@@ -11,8 +11,6 @@ import { IconSun, IconMoon } from "@tabler/icons-react";
 const ColorSchemeToggle = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
-  console.log(colorScheme, toggleColorScheme, "colorScheme, toggleColorScheme");
-
   return (
     <Group position="center" my="xl">
       <SegmentedControl

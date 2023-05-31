@@ -1,4 +1,6 @@
 import { chatRouter } from "@/server/api/routers/chat";
+import { tmdbRouter } from "@/server/api/routers/tmdb";
+import { wishlistRouter } from "@/server/api/routers/wishlist";
 import { createTRPCRouter } from "@/server/api/trpc";
 
 /**
@@ -8,6 +10,8 @@ import { createTRPCRouter } from "@/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   chat: chatRouter,
+  discover: tmdbRouter,
+  wishlist: wishlistRouter,
 });
 
 // export type definition of API

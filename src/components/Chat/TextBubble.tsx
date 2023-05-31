@@ -1,18 +1,22 @@
-import { Box, createStyles, rem } from "@mantine/core";
-import React from "react";
+import { Avatar, Box, Group, createStyles, rem } from "@mantine/core";
+import React, { ReactNode, memo } from "react";
 import { motion } from "framer-motion";
+import { IconGhost, IconUser } from "@tabler/icons-react";
 
 type Props = {
-  role?: "user | response";
-  message?: string;
+  role: string;
+  message: string;
+  animate: boolean;
+  image?: string | null;
 };
 
 const useStyles = createStyles((theme) => ({
   box: {
     padding: rem(2),
-    border: `4px solid ${theme.colors?.blue?.[3]}`,
-    borderRadius: rem(16),
-    backgroundColor: theme.colors?.pastelBlue?.[1],
+    // border: `1px solid ${theme.colors?.gray?.[2]}`,
+    borderRadius: theme.radius.md,
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
   },
 }));
 
@@ -34,26 +38,41 @@ const letter = {
   },
 };
 const TextBubble = (props: Props) => {
-  const { role, message } = props;
+  const { role, message, animate, image } = props;
 
-  const { classes } = useStyles();
-  const text =
-    message ||
-    role ||
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+  const { classes, theme } = useStyles();
   return (
-    <Box className={classes.box}>
-      <motion.h3 variants={sentence} initial="hidden" animate="visible">
-        {text.split("").map((char, index) => {
-          return (
-            <motion.span key={`${char} -${index}`} variants={letter}>
-              {char}
-            </motion.span>
-          );
-        })}
-      </motion.h3>
-    </Box>
+    <Group noWrap align="end">
+      {role !== "user" ? (
+        <Avatar radius="xl" size={48}>
+          <IconGhost size="100%" color={theme.fn.primaryColor()} />
+        </Avatar>
+      ) : image ? (
+        <Avatar src={image} radius="xl" size={48} />
+      ) : (
+        <Avatar radius="xl" size={48}>
+          <IconUser size="100%" color={theme.fn.primaryColor()} />
+        </Avatar>
+      )}
+
+      <Box className={classes.box}>
+        <motion.h3
+          style={{ padding: `${rem(1)} ${rem(20)}` }}
+          variants={sentence}
+          initial={animate && "hidden"}
+          animate={animate && "visible"}
+        >
+          {message.split("").map((char, index) => {
+            return (
+              <motion.span key={`${char} -${index}`} variants={letter}>
+                {char}
+              </motion.span>
+            );
+          })}
+        </motion.h3>
+      </Box>
+    </Group>
   );
 };
 
-export default TextBubble;
+export default memo(TextBubble);

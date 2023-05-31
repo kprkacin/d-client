@@ -24,6 +24,8 @@ export const env = createEnv({
     SECRET: z.string().min(1),
     DEV_IMDB_KEY: z.string().min(1),
     MOVIE_API_URL: z.string().min(1),
+    OPENAI_API_KEY: z.string().min(1),
+    OPENAI_ORG: z.string().min(1),
   },
 
   /**
@@ -53,6 +55,8 @@ export const env = createEnv({
     SECRET: process.env.SECRET,
     DEV_IMDB_KEY: process.env.IMDB_KEY,
     MOVIE_API_URL: process.env.MOVIE_API_URL,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    OPENAI_ORG: process.env.OPENAI_ORG,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

@@ -1,9 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { z } from "zod";
-import { Configuration, CreateChatCompletionRequest, OpenAIApi } from "openai";
+import {
+  ChatCompletionRequestMessage,
+  Configuration,
+  CreateChatCompletionRequest,
+  OpenAIApi,
+} from "openai";
 import { TRPCError } from "@trpc/server";
 import { Prisma } from "@prisma/client";
 import { env } from "@/env.mjs";
+import { fetchOptions } from "../consts";
+import { ByImdbID } from "./tmdb";
 
 const defaultChatSelect = Prisma.validator<Prisma.ChatSessionSelect>()({
   id: true,
@@ -25,7 +35,7 @@ const defaultChatRecordSelect = Prisma.validator<Prisma.ChatRecordSelect>()({
 
 const base: CreateChatCompletionRequest["messages"] = [
   {
-    role: "user",
+    role: "system",
     content:
       "Act like a film or tv recommendation expert based on the following question respond with a small paragraph explaining your choice of media and a list of exactly 10 recommendations after the paragraph only put valid imdb IDs in the list.Before recommendations always say 'Recommendation list:'",
   },
@@ -38,6 +48,12 @@ const base: CreateChatCompletionRequest["messages"] = [
 
 const mockdata =
   "If you enjoyed The Lord of the Rings trilogy, I would highly recommend checking out The Hobbit trilogy. It follows a similar storyline and is set in the same world as The Lord of the Rings. The Hobbit trilogy is directed by Peter Jackson, who also directed The Lord of the Rings trilogy, making for a very seamless transition between the two. Here are some other recommendations that are similar in theme and tone to The Lord of the Rings:\n\nRecommendation list:\n- Harry Potter and the Sorcerer's Stone (tt0241527)\n- The Chronicles of Narnia: The Lion, the Witch and the Wardrobe (tt0363771)\n- Pirates of the Caribbean: The Curse of the Black Pearl (tt0325980)\n- The NeverEnding Story (tt0088323)\n- Willow (tt0096446)\n- The Dark Crystal (tt0083791)\n- Labyrinth (tt0091369)\n- Eragon (tt0449010)\n- The Princess Bride (tt0093779)";
+
+const configuration = new Configuration({
+  organization: env.OPENAI_ORG,
+  apiKey: env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 export const chatRouter = createTRPCRouter({
   allChats: protectedProcedure.query(async ({ ctx }) => {
     const { prisma, session } = ctx;
@@ -73,14 +89,13 @@ export const chatRouter = createTRPCRouter({
       },
     });
 
-    console.log("emptyChat", emptyChat);
     if (emptyChat?.id) {
       return emptyChat;
     }
 
     return await prisma.chatSession.create({
       data: {
-        name: "Chat Session",
+        name: `Chat Session ${new Date().toLocaleString()}`,
         author: {
           connect: { email: session?.user?.email || undefined },
         },
@@ -106,27 +121,67 @@ export const chatRouter = createTRPCRouter({
   ask: protectedProcedure
     .input(
       z.object({
-        chatSessionId: z.string().cuid().optional(),
+        chatSessionId: z.string().cuid(),
         query: z.string().min(1),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const { query, chatSessionId } = input;
       const { prisma, session } = ctx;
-      const recommendationListRegex = "/Recommendation list:/";
-      const recommendationListIndex = mockdata.search(recommendationListRegex);
+      const currentSession = await prisma.chatSession.findUnique({
+        where: { id: chatSessionId },
+        select: defaultChatSelect,
+      });
 
-      const firstParagraph = mockdata.slice(0, recommendationListIndex).trim();
-      console.log("First Paragraph:", firstParagraph);
+      if (!currentSession) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Session not found",
+        });
+      }
+
+      const previousMessages: CreateChatCompletionRequest["messages"] =
+        currentSession.chatRecords.map((cr) => ({
+          role:
+            (cr.role as ChatCompletionRequestMessage["role"]) || "assistant",
+          content: cr.paragraph,
+        }));
+      const response = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [
+          ...base,
+          ...previousMessages,
+          { content: query, role: "user" },
+        ],
+        // max_tokens: 50,
+      });
+
+      const { choices } = response.data;
+      console.log("choices", choices);
+      const obj = choices[0];
+
+      if (!obj || !obj.message) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "No response from AI",
+        });
+      }
+
+      const { content } = obj.message;
+
+      const recommendationListRegex = "Recommendation list:";
+      const recommendationListIndex = content.search(recommendationListRegex);
+
+      const firstParagraph = content.slice(0, recommendationListIndex).trim();
 
       const idRegex = /(tt\d{7})/g;
-      const ids = mockdata.match(idRegex)?.map((id) => id);
-      console.log("apikey", env.DEV_IMDB_KEY);
+      const ids = content.match(idRegex)?.map((id) => id);
 
       const data = await Promise.allSettled(
         ids?.map(async (id) => {
           const result = await fetch(
-            `${env.MOVIE_API_URL}3/find/${id}?external_source=imdb_id&api_key=${env.DEV_IMDB_KEY}`
+            `${env.MOVIE_API_URL}3/find/${id}?external_source=imdb_id`,
+            fetchOptions
           );
 
           return result.json();
@@ -135,70 +190,37 @@ export const chatRouter = createTRPCRouter({
 
       const fullData = data
         .filter((result) => result.status === "fulfilled")
-        .map(
-          (result) => (result as PromiseFulfilledResult<JSON>).value
-        ) as Array<any>;
+        .map((result) => {
+          const value: ByImdbID = (result as PromiseFulfilledResult<any>).value;
+          const movie = value.movie_results[0];
+          const tv = value.tv_results[0];
+          return movie || tv;
+        })
+        .map((result) => result as PromiseFulfilledResult<JSON>) as Array<any>;
 
-      console.log("data", data);
-
-      if (!chatSessionId) {
-        const chatSession = await prisma.chatSession.create({
-          data: {
-            name: "Chat Session",
-            author: {
-              connect: { email: session?.user?.email || undefined },
-            },
-          },
-        });
-        await prisma.chatRecord.create({
-          data: {
-            paragraph: query,
-            role: "user",
-            ids: [],
-            fullData: [],
-            chatSession: { connect: { id: chatSession.id } },
-          },
-          select: defaultChatRecordSelect,
-        });
-        await prisma.chatRecord.create({
-          data: {
-            paragraph: firstParagraph,
-            role: "assistant",
-            ids,
-            fullData,
-            chatSession: { connect: { id: chatSession.id } },
-          },
-          select: defaultChatRecordSelect,
-        });
-        return await prisma.chatSession.findUnique({
-          where: { id: chatSession.id },
-        });
-      } else {
-        await prisma.chatRecord.create({
-          data: {
-            paragraph: query,
-            role: "user",
-            ids: [],
-            fullData: [],
-            chatSession: { connect: { id: chatSessionId } },
-          },
-          select: defaultChatRecordSelect,
-        });
-        await prisma.chatRecord.create({
-          data: {
-            paragraph: firstParagraph,
-            ids,
-            role: "assistant",
-
-            fullData,
-            chatSession: { connect: { id: chatSessionId } },
-          },
-          select: defaultChatRecordSelect,
-        });
-        return prisma.chatSession.findUnique({
-          where: { id: chatSessionId },
-        });
-      }
+      await prisma.chatRecord.create({
+        data: {
+          paragraph: query,
+          role: "user",
+          ids: [],
+          fullData: [],
+          chatSession: { connect: { id: chatSessionId } },
+        },
+        select: defaultChatRecordSelect,
+      });
+      await prisma.chatRecord.create({
+        data: {
+          paragraph: firstParagraph,
+          ids,
+          role: "assistant",
+          fullData,
+          chatSession: { connect: { id: chatSessionId } },
+        },
+        select: defaultChatRecordSelect,
+      });
+      return prisma.chatSession.findUnique({
+        where: { id: chatSessionId },
+      });
     }),
 });
 

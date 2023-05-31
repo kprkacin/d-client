@@ -12,6 +12,8 @@ import {
   MantineProvider,
 } from "@mantine/core";
 import Settings from "@/components/Settings/Settings";
+import { Notifications } from "@mantine/notifications";
+import { WishlistProvider } from "@/hooks/useWishlist";
 
 export type NextPageWithLayout<
   TProps = Record<string, unknown>,
@@ -23,7 +25,7 @@ export type NextPageWithLayout<
 const MyApp: AppType<{
   session: Session | null;
 }> = ({ Component, pageProps: { session, ...pageProps } }) => {
-  const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
+  const [colorScheme, setColorScheme] = useState<ColorScheme>("dark");
 
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
@@ -43,12 +45,38 @@ const MyApp: AppType<{
           withNormalizeCSS
           theme={{
             colorScheme,
-            primaryColor: "cyan",
-            primaryShade: { dark: 7, light: 5 },
-            defaultRadius: "lg",
+            primaryColor: colorScheme === "dark" ? "yellow" : "cyan",
+            primaryShade: { dark: 4, light: 5 },
+
+            defaultRadius: "sm",
+            loader: "bars",
+            components: {
+              ["Carousel"]: {
+                styles: {
+                  control: {
+                    backgroundColor: "#FFD43B",
+                    borderColor: "#FFD43B",
+                    color: colorScheme === "dark" ? "black" : "white",
+                  },
+                },
+              },
+              ["Button"]: {
+                styles: {
+                  root: {
+                    color: colorScheme === "dark" ? "black" : "white",
+                  },
+                },
+                defaultProps: {
+                  // compact: true,
+                },
+              },
+            },
           }}
         >
-          {getLayout(<Component {...pageProps} />)}
+          <Notifications />
+          <WishlistProvider>
+            {getLayout(<Component {...pageProps} />)}
+          </WishlistProvider>{" "}
           <Settings />
         </MantineProvider>{" "}
       </ColorSchemeProvider>

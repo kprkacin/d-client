@@ -1,6 +1,6 @@
-import { Center, Container, Text, rem } from "@mantine/core";
+import { Center, Container, rem } from "@mantine/core";
 
-import { NextPageWithLayout } from "../_app";
+import { type NextPageWithLayout } from "../_app";
 import ChatBox from "@/components/Chat/ChatBox";
 import { useRouter } from "next/router";
 

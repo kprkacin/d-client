@@ -3,10 +3,12 @@ import {
   Button,
   Center,
   Container,
+  Grid,
+  Group,
   ScrollArea,
+  Stack,
   Table,
   Text,
-  Title,
   createStyles,
   rem,
 } from "@mantine/core";
@@ -14,6 +16,8 @@ import { type NextPageWithLayout } from "../_app";
 import { api } from "@/utils/api";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import ChatSpotlight from "@/components/Chat/ChatSpotlight";
+import { notifications } from "@mantine/notifications";
 
 const useStyles = createStyles((theme) => ({
   progressBar: {
@@ -29,7 +33,7 @@ const ChatPage: NextPageWithLayout = () => {
   const { data = [], refetch } = api.chat.allChats.useQuery();
   const router = useRouter();
 
-  const { classes, theme } = useStyles();
+  const { theme } = useStyles();
 
   const { mutate: createNewChat } = api.chat.newSession.useMutation({
     onError: () => {
@@ -47,7 +51,12 @@ const ChatPage: NextPageWithLayout = () => {
       console.error("Error deleting comment");
     },
     onSuccess: (res) => {
-      console.log(res);
+      notifications.show({
+        title: "Deleted succesfully",
+        color: "red",
+
+        message: "Deleted",
+      });
     },
     onSettled: () => {
       void refetch();
@@ -61,7 +70,7 @@ const ChatPage: NextPageWithLayout = () => {
 
   const rows = data.map((row) => {
     return (
-      <tr key={row.name}>
+      <tr key={row.id}>
         <td>
           <Link href={`/chat/${row.id}`}>{row.name}</Link>
         </td>
@@ -101,22 +110,32 @@ const ChatPage: NextPageWithLayout = () => {
   return (
     <Container size="md">
       <Center>
-        <Button onClick={addNewChat}>New Chat</Button>
-        <ScrollArea>
-          <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Author</th>
-                <th>Number of messages</th>
-                <th>Last Updated</th>
-                <th>Created At</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>{rows}</tbody>
-          </Table>
-        </ScrollArea>
+        <Stack>
+          <Grid>
+            <Grid.Col span={10}>
+              <ChatSpotlight />
+            </Grid.Col>
+            <Grid.Col span={2}>
+              {" "}
+              <Button onClick={addNewChat}>New Chat</Button>
+            </Grid.Col>
+          </Grid>
+          <ScrollArea>
+            <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Author</th>
+                  <th>Number of messages</th>
+                  <th>Last Updated</th>
+                  <th>Created At</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>{rows}</tbody>
+            </Table>
+          </ScrollArea>
+        </Stack>
       </Center>
     </Container>
   );
