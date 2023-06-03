@@ -3,7 +3,13 @@ import {
   IconSquareRoundedMinus,
   IconSquareRoundedPlus,
 } from "@tabler/icons-react";
-import { Group, Menu, ActionIcon, useMantineTheme } from "@mantine/core";
+import {
+  Group,
+  Menu,
+  ActionIcon,
+  useMantineTheme,
+  Button,
+} from "@mantine/core";
 import { useWishlist } from "@/hooks/useWishlist";
 import { type FloatingPosition } from "@mantine/core/lib/Floating";
 
@@ -13,6 +19,7 @@ interface AddToWishlistMenuProps {
   position?: FloatingPosition;
   iconSize?: number;
   iconStroke?: string;
+  button?: boolean;
 }
 
 const rightSection = (isInWishlist: boolean, color: string) => {
@@ -27,10 +34,12 @@ const rightSection = (isInWishlist: boolean, color: string) => {
   );
 };
 const AddToWishlistMenu: React.FC<AddToWishlistMenuProps> = (props) => {
-  const { mediaId, mediaType, position = "right" } = props;
+  const { mediaId, mediaType, button, position = "right" } = props;
   const { wishlists, isInWishlist, addToWishlist, removeFromWishlist } =
     useWishlist();
   const theme = useMantineTheme();
+
+  if (mediaType === "person") return null;
   return (
     <Menu
       position={position}
@@ -40,20 +49,33 @@ const AddToWishlistMenu: React.FC<AddToWishlistMenuProps> = (props) => {
       transitionProps={{ transition: "rotate-right", duration: 150 }}
     >
       <Menu.Target>
-        <ActionIcon variant="transparent" size={56}>
-          <IconBookmark
-            size="8rem"
-            stroke={1}
-            color={theme.fn.primaryColor()}
-          />
-        </ActionIcon>
+        {button ? (
+          <Button
+            rightIcon={
+              <IconBookmark
+                size="2rem"
+                stroke={1.2}
+                // color={theme.fn.primaryColor()}
+              />
+            }
+          >
+            Add to Watchlist
+          </Button>
+        ) : (
+          <ActionIcon variant="transparent" size={56}>
+            <IconBookmark
+              size="8rem"
+              stroke={1}
+              color={theme.fn.primaryColor()}
+            />
+          </ActionIcon>
+        )}
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label>Watchlists</Menu.Label>
         {wishlists.map((wishlist) => {
           if (!wishlist) return null;
           const inCurrentWishlist = isInWishlist(mediaId, wishlist.id);
-          console.log(inCurrentWishlist, "inCurrentWishlist");
           return (
             <Menu.Item
               key={wishlist?.id}

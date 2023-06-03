@@ -1,5 +1,12 @@
-import { Avatar, Box, Group, createStyles, rem } from "@mantine/core";
-import React, { ReactNode, memo } from "react";
+import {
+  Avatar,
+  Box,
+  Group,
+  MediaQuery,
+  createStyles,
+  rem,
+} from "@mantine/core";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { IconGhost, IconUser } from "@tabler/icons-react";
 
@@ -41,22 +48,29 @@ const TextBubble = (props: Props) => {
   const { role, message, animate, image } = props;
 
   const { classes, theme } = useStyles();
+  const avatar = () => {
+    return role !== "user" ? (
+      <Avatar radius="xl" size={48}>
+        <IconGhost size="100%" color={theme.fn.primaryColor()} />
+      </Avatar>
+    ) : image ? (
+      <Avatar src={image} radius="xl" size={48} />
+    ) : (
+      <Avatar radius="xl" size={48}>
+        <IconUser size="100%" color={theme.fn.primaryColor()} />
+      </Avatar>
+    );
+  };
   return (
     <Group noWrap align="end">
-      {role !== "user" ? (
-        <Avatar radius="xl" size={48}>
-          <IconGhost size="100%" color={theme.fn.primaryColor()} />
-        </Avatar>
-      ) : image ? (
-        <Avatar src={image} radius="xl" size={48} />
-      ) : (
-        <Avatar radius="xl" size={48}>
-          <IconUser size="100%" color={theme.fn.primaryColor()} />
-        </Avatar>
-      )}
-
+      <MediaQuery
+        smallerThan={theme.breakpoints.sm}
+        styles={{ display: "none" }}
+      >
+        {avatar()}
+      </MediaQuery>
       <Box className={classes.box}>
-        <motion.h3
+        <motion.h4
           style={{ padding: `${rem(1)} ${rem(20)}` }}
           variants={sentence}
           initial={animate && "hidden"}
@@ -69,7 +83,14 @@ const TextBubble = (props: Props) => {
               </motion.span>
             );
           })}
-        </motion.h3>
+        </motion.h4>
+
+        <MediaQuery
+          largerThan={theme.breakpoints.sm}
+          styles={{ display: "none" }}
+        >
+          {avatar()}
+        </MediaQuery>
       </Box>
     </Group>
   );

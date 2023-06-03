@@ -4,7 +4,9 @@ import { type ReactNode } from "react";
 import LayoutHeader from "./LayoutHeader";
 import React from "react";
 import { AppShell } from "@mantine/core";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 type DefaultLayoutProps = { children: ReactNode; InnerHeader?: ReactNode };
 
@@ -15,6 +17,11 @@ const pageTransition = {
 };
 
 export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
+  const session = useSession();
+  const router = useRouter();
+  console.log(session);
+  const authed = session.status && session.status !== "unauthenticated";
+  if (!authed) void router.push("/api/auth/signin");
   return (
     <>
       <Head>
@@ -23,25 +30,27 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
       </Head>
 
       <main>
-        <AppShell
-          padding="md"
-          aside={<LayoutHeader />}
-          styles={(theme) => ({
-            main: {
-              overflow: "hidden",
-            },
-          })}
-        >
-          <motion.div
-            transition={pageTransition}
-            initial={{ x: "-500%" }}
-            animate={{ x: "0%" }}
+        {authed && session.data?.user.email && (
+          <AppShell
+            padding="md"
+            aside={<LayoutHeader />}
+            styles={() => ({
+              main: {
+                overflow: "hidden",
+              },
+            })}
           >
-            <Container fluid px={0}>
-              {children}
-            </Container>
-          </motion.div>
-        </AppShell>
+            <motion.div
+              transition={pageTransition}
+              initial={{ x: "-500%" }}
+              animate={{ x: "0%" }}
+            >
+              <Container fluid px={0}>
+                {children}
+              </Container>
+            </motion.div>
+          </AppShell>
+        )}
       </main>
     </>
   );

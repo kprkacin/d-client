@@ -1,15 +1,11 @@
 import {
   createStyles,
-  Badge,
-  Group,
   Title,
   Text,
-  Card,
   SimpleGrid,
   Container,
   Paper,
   Avatar,
-  Button,
 } from "@mantine/core";
 
 const mockdata = [
@@ -109,7 +105,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function Testimonials() {
-  const { classes, theme } = useStyles();
+  const { classes } = useStyles();
   const features = mockdata.map((feature, idx) => (
     <Paper
       key={feature.name}

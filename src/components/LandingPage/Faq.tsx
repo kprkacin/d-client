@@ -53,7 +53,6 @@ const useStyles = createStyles((theme) => ({
     marginBottom: theme.spacing.md,
     paddingLeft: theme.spacing.md,
     color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
   },
 
   item: {

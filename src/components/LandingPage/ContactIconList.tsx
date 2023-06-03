@@ -1,11 +1,6 @@
-import {
-  createStyles,
-  ThemeIcon,
-  Text,
-  SimpleGrid,
-  Box,
-  Stack,
-} from "@mantine/core";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { createStyles, ThemeIcon, Text, Box, Stack } from "@mantine/core";
 import { IconAt, IconPhone, IconMapPin, IconSun } from "@tabler/icons-react";
 
 type ContactIconVariant = "white" | "gradient";
@@ -25,9 +20,9 @@ const useStyles = createStyles((theme, { variant }: ContactIconStyles) => ({
     marginRight: theme.spacing.md,
     backgroundImage:
       variant === "gradient"
-        ? `linear-gradient(135deg, ${theme.colors[theme.primaryColor][4]} 0%, ${
-            theme.colors[theme.primaryColor][6]
-          } 100%)`
+        ? `linear-gradient(135deg, ${
+            theme.colors[theme.primaryColor]![4]
+          } 0%, ${theme.colors[theme.primaryColor]![6]} 100%)`
         : "none",
     backgroundColor: "transparent",
   },
@@ -36,7 +31,7 @@ const useStyles = createStyles((theme, { variant }: ContactIconStyles) => ({
     color:
       variant === "gradient"
         ? theme.colors.gray[6]
-        : theme.colors[theme.primaryColor][0],
+        : theme.colors[theme.primaryColor]![0],
   },
 
   description: {

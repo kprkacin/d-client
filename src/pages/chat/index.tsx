@@ -4,7 +4,6 @@ import {
   Center,
   Container,
   Grid,
-  Group,
   ScrollArea,
   Stack,
   Table,
@@ -18,6 +17,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import ChatSpotlight from "@/components/Chat/ChatSpotlight";
 import { notifications } from "@mantine/notifications";
+import { useMediaQuery } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
   progressBar: {
@@ -32,8 +32,8 @@ const useStyles = createStyles((theme) => ({
 const ChatPage: NextPageWithLayout = () => {
   const { data = [], refetch } = api.chat.allChats.useQuery();
   const router = useRouter();
-
   const { theme } = useStyles();
+  const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
   const { mutate: createNewChat } = api.chat.newSession.useMutation({
     onError: () => {
@@ -50,7 +50,7 @@ const ChatPage: NextPageWithLayout = () => {
     onError: () => {
       console.error("Error deleting comment");
     },
-    onSuccess: (res) => {
+    onSuccess: () => {
       notifications.show({
         title: "Deleted succesfully",
         color: "red",
@@ -74,24 +74,32 @@ const ChatPage: NextPageWithLayout = () => {
         <td>
           <Link href={`/chat/${row.id}`}>{row.name}</Link>
         </td>
-        <td>
-          <Anchor component="button" fz="sm">
-            {/* {row.author?.image} */}
-            {row.author?.email}
-          </Anchor>
-        </td>
-        <td>{Intl.NumberFormat().format(row.chatRecords.length)}</td>
-        <td>
-          <Text fz="sm" color={theme.colorScheme === "dark" ? "gray" : "dark"}>
-            {row.updatedAt.toDateString()}
-          </Text>
-        </td>
-
-        <td>
-          <Text fz="sm" color={theme.colorScheme === "dark" ? "gray" : "dark"}>
-            {row.createdAt.toDateString()}
-          </Text>
-        </td>
+        <td></td>
+        {!mobile && (
+          <>
+            <Anchor component="button" fz="sm">
+              {/* {row.author?.image} */}
+              {row.author?.email}
+            </Anchor>
+            <td>{Intl.NumberFormat().format(row.chatRecords.length)}</td>
+            <td>
+              <Text
+                fz="sm"
+                color={theme.colorScheme === "dark" ? "gray" : "dark"}
+              >
+                {row.updatedAt.toDateString()}
+              </Text>
+            </td>
+            <td>
+              <Text
+                fz="sm"
+                color={theme.colorScheme === "dark" ? "gray" : "dark"}
+              >
+                {row.createdAt.toDateString()}
+              </Text>
+            </td>
+          </>
+        )}
         <td>
           <Button
             variant="outline"
@@ -112,23 +120,26 @@ const ChatPage: NextPageWithLayout = () => {
       <Center>
         <Stack>
           <Grid>
-            <Grid.Col span={10}>
+            <Grid.Col span={8} sm={10}>
               <ChatSpotlight />
             </Grid.Col>
-            <Grid.Col span={2}>
-              {" "}
+            <Grid.Col span={4} md={2}>
               <Button onClick={addNewChat}>New Chat</Button>
             </Grid.Col>
           </Grid>
           <ScrollArea>
-            <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
+            <Table verticalSpacing="xs">
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Author</th>
-                  <th>Number of messages</th>
-                  <th>Last Updated</th>
-                  <th>Created At</th>
+                  {!mobile && (
+                    <>
+                      <th>Author</th>
+                      <th>Number of messages</th>
+                      <th>Last Updated</th>
+                      <th>Created At</th>
+                    </>
+                  )}
                   <th></th>
                 </tr>
               </thead>

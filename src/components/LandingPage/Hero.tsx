@@ -97,7 +97,7 @@ const Hero = () => {
             </Button>
           </Group>
         </div>
-        <Image src="hero.svg" className={classes.image} />
+        <Image src="hero.svg" alt="hero" className={classes.image} />
       </div>
     </Container>
   );

@@ -74,8 +74,6 @@ const useStyles = createStyles((theme) => ({
 
 function CustomAction({
   action,
-  styles,
-  classNames,
   hovered,
   onTrigger,
   ...others

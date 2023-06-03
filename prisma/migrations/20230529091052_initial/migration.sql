@@ -14,6 +14,11 @@ CREATE TABLE "Wishlist" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "authorId" TEXT,
+    "public" BOOLEAN NOT NULL DEFAULT false,
+    "genre" TEXT[],
+    "description" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Wishlist_pkey" PRIMARY KEY ("id")
 );
@@ -23,10 +28,19 @@ CREATE TABLE "WishlistRecord" (
     "id" TEXT NOT NULL,
     "mediaId" TEXT NOT NULL,
     "mediaType" TEXT NOT NULL,
-    "watchStatus" BOOLEAN NOT NULL DEFAULT false,
     "wishlistId" TEXT NOT NULL,
 
     CONSTRAINT "WishlistRecord_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "WatchedMedia" (
+    "id" TEXT NOT NULL,
+    "mediaId" TEXT NOT NULL,
+    "authorId" TEXT,
+    "watched" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "WatchedMedia_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -109,6 +123,9 @@ CREATE TABLE "VerificationToken" (
 CREATE UNIQUE INDEX "WishlistRecord_wishlistId_mediaId_key" ON "WishlistRecord"("wishlistId", "mediaId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "WatchedMedia_authorId_mediaId_key" ON "WatchedMedia"("authorId", "mediaId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_provider_account_id_key" ON "Account"("provider", "provider_account_id");
 
 -- CreateIndex
@@ -131,6 +148,9 @@ ALTER TABLE "Wishlist" ADD CONSTRAINT "Wishlist_authorId_fkey" FOREIGN KEY ("aut
 
 -- AddForeignKey
 ALTER TABLE "WishlistRecord" ADD CONSTRAINT "WishlistRecord_wishlistId_fkey" FOREIGN KEY ("wishlistId") REFERENCES "Wishlist"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "WatchedMedia" ADD CONSTRAINT "WatchedMedia_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ChatSession" ADD CONSTRAINT "ChatSession_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ActionIcon,
   Box,
@@ -28,6 +29,18 @@ const useStyles = createStyles((theme) => ({
     // WebkitBackdropFilter: 'blur( 12px )',
     // borderRadius: '10px',
     // border: '1px solid rgba( 255, 255, 255, 0.18 )',
+  },
+  stack: {
+    [theme.fn.smallerThan("lg")]: {
+      maxWidth: "50vw",
+    },
+    [theme.fn.smallerThan("sm")]: {
+      maxWidth: "75vw",
+    },
+
+    [theme.fn.largerThan("lg")]: {
+      maxWidth: "70vw",
+    },
   },
 }));
 
@@ -81,41 +94,35 @@ const ChatBox = (props: Props) => {
       p="20px"
       className={classes.paper}
     >
-      <ScrollArea.Autosize h="90vh" ref={ref}>
-        <Center>
-          <Stack justify="space-between">
-            {!chat.isInitialLoading && (
-              <Stack>
-                <TextBubble
-                  message={greetingMessage}
-                  role="assistant"
-                  animate={!chat.data?.chatRecords?.length}
-                />
+      <Center component={ScrollArea} h="85vh">
+        {!chat.isInitialLoading && (
+          <Stack maw="70vw" className={classes.stack}>
+            <TextBubble
+              message={greetingMessage}
+              role="assistant"
+              animate={!chat.data?.chatRecords?.length}
+            />
 
-                {chat.data?.chatRecords.map((record, idx) => (
-                  <>
-                    <TextBubble
-                      message={record.paragraph}
-                      role={record.role || "user"}
-                      animate={
-                        idx + 1 === chat.data?.chatRecords?.length &&
-                        record.role !== "user"
-                      }
-                      image={data?.user.image}
-                    />
-                    {record?.fullData &&
-                      (record?.fullData as any[])?.length > 0 && (
-                        <RecommendationCarousel
-                          items={record.fullData as any[]}
-                        />
-                      )}
-                  </>
-                ))}
-              </Stack>
-            )}
+            {chat.data?.chatRecords.map((record, idx) => (
+              <>
+                <TextBubble
+                  message={record.paragraph}
+                  role={record.role || "user"}
+                  animate={
+                    idx + 1 === chat.data?.chatRecords?.length &&
+                    record.role !== "user"
+                  }
+                  image={data?.user.image}
+                />
+                {record?.fullData &&
+                  (record?.fullData as any[])?.length > 0 && (
+                    <RecommendationCarousel items={record.fullData as any[]} />
+                  )}
+              </>
+            ))}
           </Stack>
-        </Center>
-      </ScrollArea.Autosize>
+        )}
+      </Center>
       <Box pos="relative">
         <LoadingOverlay visible={chat.isLoading || isLoading} overlayBlur={2} />
 

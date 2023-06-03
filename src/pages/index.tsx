@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/react";
 import { type NextPageWithLayout } from "./_app";
 import Hero from "@/components/LandingPage/Hero";
 import { Container } from "@mantine/core";
@@ -10,8 +9,6 @@ import { EmailBanner } from "@/components/LandingPage/Newsletter";
 import { Testimonials } from "@/components/LandingPage/Testimonials";
 
 const IndexPage: NextPageWithLayout = () => {
-  const { data: session, status } = useSession();
-
   // prefetch all posts for instant navigation
   // useEffect(() => {
   //   const allPosts = postsQuery.data?.pages.flatMap((page) => page.items) ?? [];

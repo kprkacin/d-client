@@ -1,4 +1,4 @@
-import { AppShell, Container, createStyles } from "@mantine/core";
+import { AppShell, Container } from "@mantine/core";
 import Head from "next/head";
 import { type ReactNode } from "react";
 import Header from "./Header";

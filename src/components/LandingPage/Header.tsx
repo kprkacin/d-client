@@ -25,7 +25,7 @@ import {
   IconCoin,
   IconChevronDown,
 } from "@tabler/icons-react";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
@@ -138,7 +138,7 @@ const Header = () => {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-  const { classes, theme, cx } = useStyles();
+  const { classes, theme } = useStyles();
   const { data: session, status } = useSession();
 
   const links = mockdata.map((item) => (
@@ -184,9 +184,12 @@ const Header = () => {
 
           <Group className={classes.hiddenMobile}>
             {!session ? (
-              <Link href="/api/auth/signin">
-                <Button disabled={status === "loading"}>Log in</Button>
-              </Link>
+              <Button
+                disabled={status === "loading"}
+                onClick={() => void signIn(undefined, { callbackUrl: "/chat" })}
+              >
+                Log in
+              </Button>
             ) : (
               <>
                 <Text>

@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import {
-  ChatCompletionRequestMessage,
+  type ChatCompletionRequestMessage,
   Configuration,
-  CreateChatCompletionRequest,
+  type CreateChatCompletionRequest,
   OpenAIApi,
 } from "openai";
 import { TRPCError } from "@trpc/server";
 import { Prisma } from "@prisma/client";
 import { env } from "@/env.mjs";
 import { fetchOptions } from "../consts";
-import { ByImdbID } from "./tmdb";
+import { type ByImdbID } from "./tmdb";
 
 const defaultChatSelect = Prisma.validator<Prisma.ChatSessionSelect>()({
   id: true,
@@ -127,7 +127,7 @@ export const chatRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const { query, chatSessionId } = input;
-      const { prisma, session } = ctx;
+      const { prisma } = ctx;
       const currentSession = await prisma.chatSession.findUnique({
         where: { id: chatSessionId },
         select: defaultChatSelect,

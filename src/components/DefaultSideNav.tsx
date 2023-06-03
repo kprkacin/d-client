@@ -4,7 +4,6 @@ import {
   TextInput,
   Code,
   UnstyledButton,
-  Badge,
   Text,
   Group,
   ActionIcon,
@@ -12,14 +11,11 @@ import {
   rem,
   Stack,
   ScrollArea,
+  Affix,
 } from "@mantine/core";
 import {
-  IconBulb,
-  IconUser,
-  IconCheckbox,
   IconSearch,
   IconPlus,
-  IconSelector,
   IconMessageDots,
   IconRocket,
   IconPlaylistAdd,
@@ -27,6 +23,7 @@ import {
 import { UserButton } from "./User/UserButton";
 import { api } from "@/utils/api";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -151,6 +148,11 @@ const useStyles = createStyles((theme) => ({
       display: "none",
     },
   },
+
+  expandButton: {
+    position: "fixed",
+    bottom: theme.spacing.xl,
+  },
 }));
 
 const links = [
@@ -161,7 +163,7 @@ const links = [
 
 const DefaultSideNav = () => {
   const { classes, cx, theme } = useStyles();
-  const { data = [], refetch } = api.chat.allChats.useQuery();
+  const { data = [] } = api.chat.allChats.useQuery();
 
   const mainLinks = links.map((link) => (
     <UnstyledButton key={link.label} className={classes.mainLink}>

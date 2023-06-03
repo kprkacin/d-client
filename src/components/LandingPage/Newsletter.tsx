@@ -6,7 +6,6 @@ import {
   Button,
   Image,
 } from "@mantine/core";
-import image from "./image.svg";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -45,7 +44,6 @@ const useStyles = createStyles((theme) => ({
 
   title: {
     color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
     lineHeight: 1,
     marginBottom: theme.spacing.md,
   },
@@ -94,7 +92,11 @@ export function EmailBanner() {
           <Button className={classes.control}>Subscribe</Button>
         </div>
       </div>
-      <Image src={"newsletter.svg"} className={classes.image} />
+      <Image
+        src={"newsletter.svg"}
+        alt="newsletter"
+        className={classes.image}
+      />
     </div>
   );
 }

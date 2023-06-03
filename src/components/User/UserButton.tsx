@@ -1,3 +1,4 @@
+import { useSettings } from "@/hooks/useSettings";
 import {
   UnstyledButton,
   type UnstyledButtonProps,
@@ -5,9 +6,11 @@ import {
   Avatar,
   Text,
   createStyles,
+  ActionIcon,
 } from "@mantine/core";
-import { IconChevronRight } from "@tabler/icons-react";
-import { useSession } from "next-auth/react";
+import { IconChevronRight, IconPower } from "@tabler/icons-react";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const useStyles = createStyles((theme) => ({
   user: {
@@ -32,10 +35,19 @@ interface UserButtonProps extends UnstyledButtonProps {
 export function UserButton({ icon, ...others }: UserButtonProps) {
   const { classes, theme } = useStyles();
   const { data } = useSession();
+  const router = useRouter();
+  const { close } = useSettings();
 
   return (
-    <UnstyledButton className={classes.user} {...others}>
-      <Group>
+    <UnstyledButton
+      className={classes.user}
+      {...others}
+      onClick={() => {
+        void router.push("/profile");
+        close();
+      }}
+    >
+      <Group noWrap>
         <Avatar src={data?.user.image} radius="xl" />
 
         <div style={{ flex: 1 }}>
@@ -50,11 +62,20 @@ export function UserButton({ icon, ...others }: UserButtonProps) {
 
         {icon || (
           <IconChevronRight
-            size="0.9rem"
+            size="1.2rem"
             stroke={1.5}
             color={theme.fn.primaryColor()}
           />
         )}
+        <ActionIcon
+          size="sm"
+          onClick={(e) => {
+            e.stopPropagation();
+            void signOut({ callbackUrl: "/" });
+          }}
+        >
+          <IconPower color={theme.fn.primaryColor()} />
+        </ActionIcon>
       </Group>
     </UnstyledButton>
   );

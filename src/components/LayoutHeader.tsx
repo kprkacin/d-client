@@ -1,27 +1,30 @@
 import {
   createStyles,
-  Header as Mheader,
   Group,
   Button,
-  UnstyledButton,
-  Text,
-  ThemeIcon,
   Box,
   rem,
   Affix,
+  ActionIcon,
+  Stack,
+  Text,
+  Center,
+  Avatar,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconNotification,
-  IconCode,
-  IconBook,
-  IconChartPie3,
-  IconFingerprint,
-  IconCoin,
-} from "@tabler/icons-react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import DefaultSideNav from "./DefaultSideNav";
+import {
+  IconSearch,
+  IconPlus,
+  IconMessageDots,
+  IconRocket,
+  IconPlaylistAdd,
+  IconSettings,
+} from "@tabler/icons-react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { useSettings } from "@/hooks/useSettings";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -98,70 +101,27 @@ const useStyles = createStyles((theme) => ({
     borderRadius: 0,
     borderRight: `1px solid ${theme.colors.gray[1]}`,
     borderTop: `1px solid ${theme.colors.gray[1]}`,
-    width: "33.3%",
-    [`&:nth-of-type(3)`]: {
+    borderColor:
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[9]
+        : theme.colors.gray[1],
+    width: "25%",
+    height: rem(75),
+    [`&:nth-of-type(4)`]: {
       borderRight: "none",
     },
   },
 }));
 
-const mockdata = [
-  {
-    icon: IconCode,
-    title: "Open source",
-    description: "This Pokémon’s cry is very loud and distracting",
-  },
-  {
-    icon: IconCoin,
-    title: "Free for everyone",
-    description: "The fluid of Smeargle’s tail secretions changes",
-  },
-  {
-    icon: IconBook,
-    title: "Documentation",
-    description: "Yanma is capable of seeing 360 degrees without",
-  },
-  {
-    icon: IconFingerprint,
-    title: "Security",
-    description: "The shell’s rounded shape and the grooves on its.",
-  },
-  {
-    icon: IconChartPie3,
-    title: "Analytics",
-    description: "This Pokémon uses its flying ability to quickly chase",
-  },
-  {
-    icon: IconNotification,
-    title: "Notifications",
-    description: "Combusken battles with the intensely hot flames it spews",
-  },
-];
-
 const LayoutHeader = () => {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
-    useDisclosure(false);
-  const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-  const { classes, theme, cx } = useStyles();
-  const { data: session, status } = useSession();
+  const { classes, cx } = useStyles();
+  const { status, data } = useSession();
+  const router = useRouter();
+  const { toggle } = useSettings();
 
-  const links = mockdata.map((item) => (
-    <UnstyledButton className={classes.subLink} key={item.title}>
-      <Group noWrap align="flex-start">
-        <ThemeIcon size={34} variant="default" radius="md">
-          <item.icon size={rem(22)} color={theme.fn.primaryColor()} />
-        </ThemeIcon>
-        <div>
-          <Text size="sm" fw={500}>
-            {item.title}
-          </Text>
-          <Text size="xs" color="dimmed">
-            {item.description}
-          </Text>
-        </div>
-      </Group>
-    </UnstyledButton>
-  ));
+  const handleRouting = (route: string) => {
+    void router.push(route);
+  };
 
   return (
     <Box>
@@ -171,24 +131,47 @@ const LayoutHeader = () => {
           className={cx(classes.header, classes.hiddenDesktop)}
           spacing={0}
         >
-          {" "}
           <Button
             disabled={status === "loading"}
             className={classes.mobileButton}
+            onClick={() => handleRouting("/chat")}
           >
-            Log in
+            <Center component={Stack} spacing={1}>
+              <IconMessageDots size="1.5rem" />
+              <Text>Chat</Text>
+            </Center>
+          </Button>
+
+          <Button
+            disabled={status === "loading"}
+            className={classes.mobileButton}
+            onClick={() => handleRouting("/discover")}
+          >
+            <Center component={Stack} spacing={1}>
+              <IconRocket size="1.5rem" />
+              <Text>Discover</Text>
+            </Center>
+          </Button>
+
+          <Button
+            disabled={status === "loading"}
+            className={classes.mobileButton}
+            onClick={() => handleRouting("/watchlist")}
+          >
+            <Center component={Stack} spacing={1}>
+              <IconPlaylistAdd size="1.5rem" />
+              <Text>Watchlist</Text>
+            </Center>
           </Button>
           <Button
             disabled={status === "loading"}
             className={classes.mobileButton}
+            onClick={toggle}
           >
-            Log in
-          </Button>
-          <Button
-            disabled={status === "loading"}
-            className={classes.mobileButton}
-          >
-            Log in
+            <Center component={Stack} spacing={1}>
+              <IconSettings size="1.5rem" />
+              <Text>Settings</Text>
+            </Center>
           </Button>
         </Group>
       </Affix>

@@ -37,6 +37,10 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  theme: {
+    colorScheme: "dark",
+    brandColor: "#FFD43B",
+  },
   callbacks: {
     session: ({ session, user }) => ({
       ...session,
@@ -46,7 +50,11 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
-  secret: env.SECRET,
+  // pages: {
+  //   // error: "/auth/error", // Error code passed in query string as ?error=
+  // },
+
+  secret: env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   providers: [
     GitHubProvider({

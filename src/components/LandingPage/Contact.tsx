@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   createStyles,
   Text,
@@ -22,8 +23,8 @@ const useStyles = createStyles((theme) => ({
     minHeight: 400,
     boxSizing: "border-box",
     backgroundImage: `linear-gradient(-60deg, ${
-      theme.colors[theme.primaryColor][4]
-    } 0%, ${theme.colors[theme.primaryColor][7]} 100%)`,
+      theme.colors[theme.primaryColor]![4]
+    } 0%, ${theme.colors[theme.primaryColor]![7]} 100%)`,
     // borderRadius: theme.radius.md,
     padding: "4rem",
 
@@ -33,13 +34,12 @@ const useStyles = createStyles((theme) => ({
   },
 
   title: {
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
     color: theme.white,
     lineHeight: 1,
   },
 
   description: {
-    color: theme.colors[theme.primaryColor][0],
+    color: theme.colors[theme.primaryColor]![0],
     maxWidth: 300,
 
     [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
@@ -58,7 +58,7 @@ const useStyles = createStyles((theme) => ({
     color: theme.white,
 
     "&:hover": {
-      color: theme.colors[theme.primaryColor][1],
+      color: theme.colors[theme.primaryColor]![1],
     },
   },
 
@@ -77,7 +77,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   control: {
-    backgroundColor: theme.colors[theme.primaryColor][6],
+    backgroundColor: theme.colors[theme.primaryColor]![6],
   },
 }));
 

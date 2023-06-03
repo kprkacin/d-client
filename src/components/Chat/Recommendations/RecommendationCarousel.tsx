@@ -11,34 +11,10 @@ import {
   useState,
 } from "react";
 import { Carousel, type Embla } from "@mantine/carousel";
-import {
-  Progress,
-  Paper,
-  rem,
-  createStyles,
-  Accordion,
-  Portal,
-  Button,
-} from "@mantine/core";
+import { Progress, Paper, rem, Button } from "@mantine/core";
 import MovieRecommendationCard from "./MovieRecommendationCard";
 import { useDisclosure } from "@mantine/hooks";
 import TrailerModal from "./TrailerModal";
-
-const useStyles = createStyles((theme) => ({
-  root: {
-    backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[6]
-        : theme.colors.slate?.[0],
-    borderRadius: theme.radius.xl,
-  },
-
-  chevron: {
-    "&[data-rotate]": {
-      transform: "rotate(-90deg)",
-    },
-  },
-}));
 
 type Props = {
   items: any[];
@@ -81,7 +57,6 @@ const RecommendationCarousel = (props: Props) => {
   const [openedAccordion, { toggle }] = useDisclosure(false);
 
   const [embla, setEmbla] = useState<Embla | null>(null);
-  const { classes } = useStyles();
 
   const handleScroll = useCallback(() => {
     if (!embla) return;

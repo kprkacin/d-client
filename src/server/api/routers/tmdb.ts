@@ -1,19 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
-import { Configuration, CreateChatCompletionRequest, OpenAIApi } from "openai";
-import { TRPCError } from "@trpc/server";
-import { Prisma } from "@prisma/client";
 import { env } from "@/env.mjs";
 
 import { fetchOptions } from "../consts";
+import {
+  type Season,
+  type MovieDetails,
+  type PersonDetails,
+  type TVDetails,
+  type SeasonDetails,
+  type EpisodeDetails,
+  type Media,
+} from "@/types/discoverTypes";
 
 export interface ByImdbID {
   movie_results: unknown[];
   tv_results: unknown[];
 }
 
-interface Result {
+export interface Result {
   adult: boolean;
   backdrop_path?: string;
   id: number;
@@ -38,20 +44,7 @@ interface Result {
   profile_path?: string;
 }
 
-interface Media {
-  id: number;
-  title: string;
-  overview?: string;
-  image: string;
-  media_type: string;
-  genre_ids?: number[];
-  popularity: number;
-  releaseDate?: string;
-  vote_average?: number;
-  vote_count?: number;
-}
-
-const transformMedia = (result: Result): Media => ({
+export const transformMedia = (result: Result): Media => ({
   id: result.id,
   title:
     result.title ||
@@ -93,12 +86,26 @@ export const tmdbRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const { id, media_type } = input;
+
       const response = await fetch(
-        `${env.MOVIE_API_URL}3/${media_type}/${id}?language=en-US&append_to_response=credits,videos,images,watch_providers`,
+        `${env.MOVIE_API_URL}3/${media_type}/${id}?language=en-US&append_to_response=videos,images,similar,credits,combined_credits,watch/providers`,
         fetchOptions
       );
+      if (media_type === "movie") {
+        return (await response.json()) as MovieDetails;
+      }
+
+      if (media_type === "tv") {
+        return (await response.json()) as TVDetails;
+      }
+
+      if (media_type === "person") {
+        return (await response.json()) as PersonDetails;
+      }
+
       return response.json();
     }),
+
   trendingAll: protectedProcedure.query(async () => {
     const response = await fetch(
       `${env.MOVIE_API_URL}3/trending/all/day?language=en-US`,
@@ -267,6 +274,65 @@ export const tmdbRouter = createTRPCRouter({
         (r) => transformMedia({ ...r, media_type: "tv" })
       );
       return obj;
+    }),
+
+  getSingleTVSeasonDetails: protectedProcedure
+    .input(
+      z.object({
+        id: z.number().min(1),
+        seasonNum: z.number().min(1),
+      })
+    )
+    .query(async ({ input }) => {
+      const { id, seasonNum } = input;
+      const result = await fetch(
+        `${env.MOVIE_API_URL}3/tv/${id}/season/${seasonNum}?language=en-US&append_to_response=credits,watch/providers`,
+        fetchOptions
+      );
+
+      return (await result.json()) as SeasonDetails;
+    }),
+  getSingleEpisodeDetails: protectedProcedure
+    .input(
+      z.object({
+        id: z.number().min(1),
+        seasonNum: z.number().min(1),
+        episodeNum: z.number().min(1),
+      })
+    )
+    .query(async ({ input }) => {
+      const { id, seasonNum, episodeNum } = input;
+      const result = await fetch(
+        `${env.MOVIE_API_URL}3/tv/${id}/season/${seasonNum}/episode/${episodeNum}?language=en-US&append_to_response=credits`,
+        fetchOptions
+      );
+
+      return (await result.json()) as EpisodeDetails;
+    }),
+  getTVSeasonDetails: protectedProcedure
+    .input(
+      z.object({
+        id: z.number().min(1),
+        numOfSeasons: z.number().min(1),
+      })
+    )
+    .query(async ({ input }) => {
+      const { id, numOfSeasons } = input;
+
+      const data = await Promise.allSettled(
+        [...Array(numOfSeasons).keys()].map(async (idx) => {
+          const result = await fetch(
+            `${env.MOVIE_API_URL}3/tv/${id}/season/${idx + 1}?language=en-US`,
+            fetchOptions
+          );
+
+          return (await result.json()) as Season;
+        }) || []
+      );
+
+      return data
+        .filter((result) => result.status === "fulfilled")
+        .map((result) => (result as PromiseFulfilledResult<Season>).value);
     }),
 
   // ### People ###

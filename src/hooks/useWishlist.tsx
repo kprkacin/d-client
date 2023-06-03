@@ -11,6 +11,13 @@ type WishlistContextType = {
   refetch: () => void;
   addToWishlist: (id: string, mediaId: string, mediaType: string) => void;
   removeFromWishlist: (id: string, mediaId: string) => void;
+  updateWishlist: (data: {
+    id: string;
+    name: string;
+    description?: string;
+    genre?: string[];
+    public?: boolean;
+  }) => void;
 };
 
 const WishlistContext = createContext<WishlistContextType>({
@@ -20,6 +27,7 @@ const WishlistContext = createContext<WishlistContextType>({
   refetch: () => {},
   addToWishlist: () => {},
   removeFromWishlist: () => {},
+  updateWishlist: () => {},
 });
 
 type Props = {
@@ -63,6 +71,22 @@ export const WishlistProvider: React.FC<Props> = ({ children }) => {
         void refetch();
       },
     });
+  const { mutate: update } = api.wishlist.updateWishlist.useMutation({
+    onError: () => {
+      console.error("Error deleting comment");
+    },
+    onSuccess: (res) => {
+      notifications.show({
+        title: "",
+        color: "green",
+        message: "Updated successfully",
+      });
+    },
+
+    onSettled: () => {
+      void refetch();
+    },
+  });
 
   const getWishlist = useCallback(
     (id: string) => {
@@ -102,6 +126,7 @@ export const WishlistProvider: React.FC<Props> = ({ children }) => {
 
   const removeFromWishlist = useCallback(
     (id: string, mediaId: string) => {
+      console.log(data, id, mediaId, "data");
       const wishlist = data.find((wishlist) => wishlist?.id === id);
       if (!wishlist) {
         return false;
@@ -118,6 +143,19 @@ export const WishlistProvider: React.FC<Props> = ({ children }) => {
     [data, removeMediaFromWishlist]
   );
 
+  const updateWishlist = useCallback(
+    (data: {
+      id: string;
+      name: string;
+      description?: string;
+      genre?: string[];
+      public?: boolean;
+    }) => {
+      update({ ...data, publicValue: data.public });
+    },
+    [update]
+  );
+
   const providerValue = useMemo(
     () => ({
       wishlists: data,
@@ -126,6 +164,7 @@ export const WishlistProvider: React.FC<Props> = ({ children }) => {
       refetch,
       addToWishlist,
       removeFromWishlist,
+      updateWishlist,
     }),
     [
       addToWishlist,
@@ -134,6 +173,7 @@ export const WishlistProvider: React.FC<Props> = ({ children }) => {
       isInWishlist,
       refetch,
       removeFromWishlist,
+      updateWishlist,
     ]
   );
 

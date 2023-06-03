@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { api } from "@/utils/api";
-import { Modal } from "@mantine/core";
+import { Center, Modal } from "@mantine/core";
 import React from "react";
 import YouTube from "react-youtube";
 
@@ -25,7 +25,9 @@ const TrailerModal = (props: Props) => {
   )?.[0]?.key;
   return (
     <Modal opened={opened} onClose={onClose} title="Trailer" size="xl">
-      <YouTube videoId={trailer} />
+      <Center>
+        <YouTube videoId={trailer} />
+      </Center>
     </Modal>
   );
 };

@@ -39,7 +39,7 @@ const ChatSpotlight = () => {
       searchIcon={<IconSearch size="1.2rem" color={theme.fn.primaryColor()} />}
       searchPlaceholder="Search..."
       highlightQuery
-      shortcut="ctrl+/"
+      shortcut="/"
       limit={7}
       nothingFoundMessage="Nothing found..."
       transitionProps={{ duration: 300, transition: "slide-down" }}

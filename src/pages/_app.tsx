@@ -3,17 +3,20 @@ import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { api } from "@/utils/api";
 import "@/styles/globals.css";
-import { NextPage } from "next";
-import { ReactElement, ReactNode, useState } from "react";
+import { type NextPage } from "next";
+import { type ReactElement, type ReactNode, useState } from "react";
 import { DefaultLayout } from "@/components/DefaultLayout";
 import {
-  ColorScheme,
+  type ColorScheme,
   ColorSchemeProvider,
   MantineProvider,
 } from "@mantine/core";
 import Settings from "@/components/Settings/Settings";
 import { Notifications } from "@mantine/notifications";
 import { WishlistProvider } from "@/hooks/useWishlist";
+import { RouterTransition } from "@/components/RouterTransition";
+import { SettingsProvider } from "@/hooks/useSettings";
+import { WatchedProvider } from "@/hooks/useWatched";
 
 export type NextPageWithLayout<
   TProps = Record<string, unknown>,
@@ -54,8 +57,9 @@ const MyApp: AppType<{
               ["Carousel"]: {
                 styles: {
                   control: {
-                    backgroundColor: "#FFD43B",
-                    borderColor: "#FFD43B",
+                    backgroundColor:
+                      colorScheme === "dark" ? "#FFD43B" : "#22B8CF",
+                    borderColor: colorScheme === "dark" ? "#FFD43B" : "#22B8CF",
                     color: colorScheme === "dark" ? "black" : "white",
                   },
                 },
@@ -74,10 +78,15 @@ const MyApp: AppType<{
           }}
         >
           <Notifications />
-          <WishlistProvider>
-            {getLayout(<Component {...pageProps} />)}
-          </WishlistProvider>{" "}
-          <Settings />
+          <RouterTransition />
+          <SettingsProvider>
+            <WatchedProvider>
+              <WishlistProvider>
+                {getLayout(<Component {...pageProps} />)}
+              </WishlistProvider>{" "}
+            </WatchedProvider>
+            <Settings />
+          </SettingsProvider>
         </MantineProvider>{" "}
       </ColorSchemeProvider>
     </SessionProvider>
