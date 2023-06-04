@@ -149,7 +149,7 @@ export function FeaturesCards() {
 
         <Box sx={{ zIndex: 500 }}>
           <Title order={2} className={classes.title} align="center" mt="sm">
-            Why should you consider AR Business Cards?
+            Why should you consider using our AI chatbot?
           </Title>
         </Box>
 
@@ -159,8 +159,9 @@ export function FeaturesCards() {
           align="center"
           mt="md"
         >
-          Here at ARBC we believe that standing out and being unique is the key
-          to success. That's why we created AR Business Cards.
+          We believe that standing out and being unique is the key to success.
+          Our product is designed to provide you with a one-of-a-kind experience
+          that you won't find anywhere else.
         </Text>
 
         <SimpleGrid
