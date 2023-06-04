@@ -19,9 +19,8 @@ const IndexPage: NextPageWithLayout = () => {
 
   return (
     <Container
-      size="lg"
       style={{
-        // maxWidth: "100vw",
+        maxWidth: "100vw",
         overflowX: "hidden",
       }}
     >
