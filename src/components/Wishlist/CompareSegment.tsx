@@ -80,14 +80,14 @@ export function CompareSegment({ similarityData, data }: StatsSegmentsProps) {
         </Group>
       </Group>
 
-      <Text c="dimmed" fz="sm">
-        Similarity compared to other wishlist
+      <Text c="dimmed" fz="sm" my="md">
+        Similarity compared to other watchlists
       </Text>
 
       <Stack>
         {similarityData.map((stat) => (
           <Stack key={stat.label}>
-            <Text className={classes.progressLabel} c="dimmed">
+            <Text fw="bolder" className={classes.progressLabel} c="dimmed">
               {stat.label}
             </Text>
             <Progress

@@ -20,19 +20,15 @@ import { notifications } from "@mantine/notifications";
 import { useMediaQuery } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
-  progressBar: {
-    "&:not(:first-of-type)": {
-      borderLeft: `${rem(3)} solid ${
-        theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white
-      }`,
-    },
+  label: {
+    color: theme.colorScheme === "dark" ? theme.white : theme.colors.gray[7],
   },
 }));
 
 const ChatPage: NextPageWithLayout = () => {
   const { data = [], refetch } = api.chat.allChats.useQuery();
   const router = useRouter();
-  const { theme } = useStyles();
+  const { classes, theme } = useStyles();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
   const { mutate: createNewChat } = api.chat.newSession.useMutation({
@@ -74,13 +70,14 @@ const ChatPage: NextPageWithLayout = () => {
         <td>
           <Link href={`/chat/${row.id}`}>{row.name}</Link>
         </td>
-        <td></td>
         {!mobile && (
           <>
-            <Anchor component="button" fz="sm">
-              {/* {row.author?.image} */}
-              {row.author?.email}
-            </Anchor>
+            <td>
+              <Anchor component="button" fz="sm">
+                {/* {row.author?.image} */}
+                {row.author?.email}
+              </Anchor>
+            </td>
             <td>{Intl.NumberFormat().format(row.chatRecords.length)}</td>
             <td>
               <Text
@@ -104,6 +101,9 @@ const ChatPage: NextPageWithLayout = () => {
           <Button
             variant="outline"
             color="red"
+            classNames={{
+              root: classes.label,
+            }}
             onClick={() => {
               deleteChat({ id: row.id });
             }}

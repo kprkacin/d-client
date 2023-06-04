@@ -65,6 +65,7 @@ const PersonDetail = (props: Props) => {
           spacing={theme.spacing.lg}
         >
           <Image
+            withPlaceholder
             src={`https://image.tmdb.org/t/p/${posterSizes.original}/${data?.profile_path}`}
             alt="Detail Banner"
             fit="contain"

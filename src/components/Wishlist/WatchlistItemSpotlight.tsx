@@ -92,6 +92,7 @@ function CustomAction({
         {action.image && (
           <Center>
             <Image
+              withPlaceholder
               src={action.image}
               alt={action.title}
               width={85}

@@ -99,6 +99,7 @@ export function EmailBanner() {
         </div>
       </div>
       <Image
+        withPlaceholder
         src={dark ? "newsletter-dark.svg" : "newsletter-light.svg"}
         alt="newsletter"
         className={classes.image}

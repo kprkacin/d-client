@@ -46,6 +46,7 @@ const WishlistBanner = (props: Props) => {
     <Group w="100%" grow spacing={0}>
       <Box w="45%">
         <Image
+          withPlaceholder
           src={`https://image.tmdb.org/t/p/${posterSizes.w500}/${item?.wishlistRecords?.[0]?.media?.image}`}
           alt="Watchlist Banner"
           height={PRIMARY_COL_HEIGHT}
@@ -55,6 +56,7 @@ const WishlistBanner = (props: Props) => {
       </Box>
       <Stack w="45%" spacing={0} h={PRIMARY_COL_HEIGHT}>
         <Image
+          withPlaceholder
           src={`https://image.tmdb.org/t/p/${posterSizes.w500}/${item?.wishlistRecords?.[1]?.media?.image}`}
           alt="Watchlist Banner"
           height={SECONDARY_COL_HEIGHT}
@@ -62,6 +64,7 @@ const WishlistBanner = (props: Props) => {
           className={classes.image}
         />
         <Image
+          withPlaceholder
           src={`https://image.tmdb.org/t/p/${posterSizes.w500}/${item?.wishlistRecords?.[2]?.media?.image}`}
           alt="Watchlist Banner"
           fit="cover"

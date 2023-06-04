@@ -110,6 +110,7 @@ const WatchlistPage: NextPageWithLayout = () => {
             <Group align="center" noWrap>
               {" "}
               <Image
+                withPlaceholder
                 src={`https://image.tmdb.org/t/p/${posterSizes.w500}/${row?.image}`}
                 height={80}
                 width={80}

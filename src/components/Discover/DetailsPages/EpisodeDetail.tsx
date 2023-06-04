@@ -63,6 +63,7 @@ const EpisodeDetail = (props: Props) => {
           spacing={theme.spacing.lg}
         >
           <Image
+            withPlaceholder
             src={`https://image.tmdb.org/t/p/${posterSizes.original}/${data?.still_path}`}
             alt="Detail Banner"
             fit="contain"

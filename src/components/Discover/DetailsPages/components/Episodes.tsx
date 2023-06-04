@@ -99,6 +99,7 @@ const Episodes = (props: Props) => {
             className={classes.clickable}
           >
             <Image
+              withPlaceholder
               src={`https://image.tmdb.org/t/p/${posterSizes.w500}/${row?.still_path}`}
               height={200}
               width={250}

@@ -126,6 +126,7 @@ const TVDetail = (props: Props) => {
           spacing={0}
         >
           <Image
+            withPlaceholder
             src={`https://image.tmdb.org/t/p/${posterSizes.original}/${data?.poster_path}`}
             alt="Detail Banner"
             fit="contain"

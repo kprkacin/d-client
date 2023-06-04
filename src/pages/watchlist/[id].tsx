@@ -15,24 +15,25 @@ const WatchlistDetailPage: NextPageWithLayout = () => {
   const query = api.wishlist.getWishlist.useQuery({
     id: String(id),
   });
-  const { mutate: update } = api.wishlist.updateWishlist.useMutation({
-    onError: () => {
-      console.error("Error deleting comment");
-    },
-    onSuccess: () => {
-      notifications.show({
-        title: "",
-        color: "green",
-        message: "Updated successfully",
-      });
-    },
+  const { mutate: update, isLoading: updateLoading } =
+    api.wishlist.updateWishlist.useMutation({
+      onError: () => {
+        console.error("Error deleting comment");
+      },
+      onSuccess: () => {
+        notifications.show({
+          title: "",
+          color: "green",
+          message: "Updated successfully",
+        });
+      },
 
-    onSettled: () => {
-      void query.refetch();
-    },
-  });
+      onSettled: () => {
+        void query.refetch();
+      },
+    });
 
-  const { mutate: removeMediaFromWishlist } =
+  const { mutate: removeMediaFromWishlist, isLoading: removeLoading } =
     api.wishlist.removeMediaFromWishlist.useMutation({
       onError: () => {
         console.error("Error deleting comment");
@@ -49,7 +50,7 @@ const WatchlistDetailPage: NextPageWithLayout = () => {
         void query.refetch();
       },
     });
-  const { mutate: addMediaToWishlist } =
+  const { mutate: addMediaToWishlist, isLoading: addLoading } =
     api.wishlist.addMediaToWishlist.useMutation({
       onError: () => {
         console.error("Error deleting comment");
@@ -99,6 +100,8 @@ const WatchlistDetailPage: NextPageWithLayout = () => {
       <WishlistDetail
         data={query.data as WishlistDetails}
         isLoading={query.isLoading}
+        updateLoading={updateLoading}
+        addRemoveLoading={addLoading || removeLoading}
         updateWishlist={updateWishlist}
         removeFromWishlist={removeFromWishlist}
         addToWishlist={addToWishlist}

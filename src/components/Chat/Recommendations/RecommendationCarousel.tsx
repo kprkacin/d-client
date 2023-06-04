@@ -73,8 +73,8 @@ const RecommendationCarousel = (props: Props) => {
 
   return (
     <>
-      <Button w="5rem" onClick={toggle}>
-        Show
+      <Button w="100%" mt="md" onClick={toggle}>
+        Show Recommendations
       </Button>
       <Paper
         py={40}

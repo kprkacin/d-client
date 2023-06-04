@@ -20,6 +20,7 @@ import {
   ActionIcon,
   Tooltip,
   Switch,
+  LoadingOverlay,
 } from "@mantine/core";
 import { posterSizes } from "@/utils/consts";
 import { IconX } from "@tabler/icons-react";
@@ -62,6 +63,8 @@ const genres = [
 type Props = {
   data?: WishlistDetails;
   isLoading: boolean;
+  updateLoading: boolean;
+  addRemoveLoading: boolean;
   updateWishlist: (data: {
     id: string;
     name: string;
@@ -99,8 +102,15 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const WishlistDetail = (props: Props) => {
-  const { data, isLoading, removeFromWishlist, updateWishlist, addToWishlist } =
-    props;
+  const {
+    data,
+    isLoading,
+    updateLoading,
+    addRemoveLoading,
+    removeFromWishlist,
+    updateWishlist,
+    addToWishlist,
+  } = props;
   const form = useForm({
     initialValues: {
       name: "",
@@ -174,6 +184,7 @@ const WishlistDetail = (props: Props) => {
           px={theme.spacing.lg}
         >
           <form onSubmit={form.onSubmit(handleSubmit)}>
+            <LoadingOverlay visible={updateLoading} opacity={3} />
             <Stack w={"100%"}>
               <TextInput
                 placeholder="Playlist Title"
@@ -226,6 +237,8 @@ const WishlistDetail = (props: Props) => {
         )}
 
         <Center mt={theme.spacing.md}>
+          <LoadingOverlay visible={addRemoveLoading} opacity={3} />
+
           <ScrollArea.Autosize mah={700} type="hover">
             {data.wishlistRecords.map((record: WishlistRecordWithMedia) => {
               const { media } = record;
@@ -239,6 +252,7 @@ const WishlistDetail = (props: Props) => {
                     position="apart"
                   >
                     <Image
+                      withPlaceholder
                       src={`https://image.tmdb.org/t/p/${posterSizes.w500}/${media?.image}`}
                       alt="Playlist item"
                       radius={theme.radius.lg}

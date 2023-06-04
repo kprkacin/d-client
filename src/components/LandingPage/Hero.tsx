@@ -8,6 +8,8 @@ import {
   Group,
   Text,
 } from "@mantine/core";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -70,7 +72,7 @@ const useStyles = createStyles((theme) => ({
 
 const Hero = () => {
   const { classes, theme } = useStyles();
-
+  const router = useRouter();
   const dark = theme.colorScheme === "dark";
 
   return (
@@ -94,12 +96,17 @@ const Hero = () => {
           </Text>
 
           <Group mt={30}>
-            <Button size="md" className={classes.control}>
+            <Button
+              size="md"
+              className={classes.control}
+              onClick={() => void signIn(undefined, { callbackUrl: "/chat" })}
+            >
               Try Demo
             </Button>
           </Group>
         </div>
         <Image
+          withPlaceholder
           src={dark ? "hero-dark.svg" : "hero-light.svg"}
           alt="hero"
           className={classes.image}

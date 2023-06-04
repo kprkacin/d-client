@@ -77,6 +77,7 @@ export function FaqWithImage() {
         <Grid id="faq-grid" gutter={50}>
           <Col span={12} md={6}>
             <Image
+              withPlaceholder
               src={dark ? "faq-dark.svg" : "faq-light.svg"}
               alt="Frequently Asked Questions"
             />

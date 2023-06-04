@@ -66,6 +66,7 @@ const SeasonDetail = (props: Props) => {
           spacing={theme.spacing.lg}
         >
           <Image
+            withPlaceholder
             src={`https://image.tmdb.org/t/p/${posterSizes.original}/${data?.poster_path}`}
             alt="Detail Banner"
             fit="contain"

@@ -92,6 +92,7 @@ const Seasons = (props: Props) => {
             className={classes.clickable}
           >
             <Image
+              withPlaceholder
               src={`https://image.tmdb.org/t/p/${posterSizes.w500}/${row?.poster_path}`}
               //   height={300}
               width={250}
