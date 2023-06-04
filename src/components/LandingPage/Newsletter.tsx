@@ -12,6 +12,7 @@ const useStyles = createStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     padding: "6rem",
+    marginTop: "3rem",
     // borderRadius: theme.radius.md,
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
@@ -19,7 +20,9 @@ const useStyles = createStyles((theme) => ({
       theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[3]
     }`,
 
-    [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+    [`@media (max-width: ${theme.breakpoints.sm}px)`]: {},
+
+    [theme.fn.smallerThan("sm")]: {
       flexDirection: "column-reverse",
       padding: theme.spacing.xl,
     },
@@ -28,7 +31,7 @@ const useStyles = createStyles((theme) => ({
   image: {
     maxWidth: "40%",
 
-    [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+    [theme.fn.smallerThan("sm")]: {
       maxWidth: "100%",
     },
   },
@@ -36,7 +39,7 @@ const useStyles = createStyles((theme) => ({
   body: {
     paddingRight: "6rem",
 
-    [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+    [theme.fn.smallerThan("sm")]: {
       paddingRight: 0,
       marginTop: theme.spacing.xl,
     },
@@ -71,7 +74,10 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function EmailBanner() {
-  const { classes } = useStyles();
+  const { classes, theme } = useStyles();
+
+  const dark = theme.colorScheme === "dark";
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.body}>
@@ -93,7 +99,7 @@ export function EmailBanner() {
         </div>
       </div>
       <Image
-        src={"newsletter.svg"}
+        src={dark ? "newsletter-dark.svg" : "newsletter-light.svg"}
         alt="newsletter"
         className={classes.image}
       />

@@ -3,10 +3,8 @@ import {
   Affix,
   Drawer,
   Space,
-  Title,
   createStyles,
   rem,
-  useMantineTheme,
 } from "@mantine/core";
 import { IconAdjustments } from "@tabler/icons-react";
 import ColorSchemeToggle from "./ColorSchemeToggle";

@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { Season, type SeasonDetails } from "@/types/discoverTypes";
+import React from "react";
+import { type SeasonDetails } from "@/types/discoverTypes";
 import {
   Center,
   Flex,
@@ -8,25 +8,11 @@ import {
   Image,
   Stack,
   Title,
-  Badge,
-  Button,
   createStyles,
   Paper,
-  Blockquote,
-  Anchor,
-  LoadingOverlay,
 } from "@mantine/core";
 import { posterSizes } from "@/utils/consts";
-import YouTube from "react-youtube";
-import {
-  IconPlus,
-  IconStarFilled,
-  IconTrendingDown,
-  IconTrendingUp,
-} from "@tabler/icons-react";
 import { useMediaQuery } from "@mantine/hooks";
-import SimilarsCarousel from "./components/SimilarsCarousel";
-import Seasons from "./components/Seasons";
 import WatchProviders from "./components/WatchProviders";
 import CastCarousel from "./components/CastCarousel";
 import Episodes from "./components/Episodes";
@@ -64,16 +50,7 @@ const SeasonDetail = (props: Props) => {
 
   const lg = useMediaQuery(`(max-width: ${theme.breakpoints.xl})`);
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
-  const small = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-  const youtubeOpts = mobile
-    ? {
-        width: small ? 350 : 525,
-        height: small ? 200 : 300,
-      }
-    : {
-        height: 400,
-        width: 700,
-      };
+
   if (isLoading) return <SkeletonPage />;
 
   console.log(data, "data");

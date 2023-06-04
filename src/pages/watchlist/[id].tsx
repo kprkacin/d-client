@@ -1,11 +1,9 @@
 import { Container } from "@mantine/core";
 import { useRouter } from "next/router";
 import { api } from "@/utils/api";
-import { type TVDetails } from "@/types/discoverTypes";
-import TVDetail from "@/components/Discover/DetailsPages/TVDetail";
 import WishlistDetail from "@/components/Wishlist/WishlistDetail";
 import { type NextPageWithLayout } from "../_app";
-import { WishlistDetails } from "@/types/wishlistTypes";
+import { type WishlistDetails } from "@/types/wishlistTypes";
 import { notifications } from "@mantine/notifications";
 import { useCallback } from "react";
 
@@ -21,7 +19,7 @@ const WatchlistDetailPage: NextPageWithLayout = () => {
     onError: () => {
       console.error("Error deleting comment");
     },
-    onSuccess: (res) => {
+    onSuccess: () => {
       notifications.show({
         title: "",
         color: "green",
@@ -39,7 +37,7 @@ const WatchlistDetailPage: NextPageWithLayout = () => {
       onError: () => {
         console.error("Error deleting comment");
       },
-      onSuccess: (res) => {
+      onSuccess: () => {
         notifications.show({
           title: "",
           color: "red",
@@ -56,7 +54,7 @@ const WatchlistDetailPage: NextPageWithLayout = () => {
       onError: () => {
         console.error("Error deleting comment");
       },
-      onSuccess: (res) => {
+      onSuccess: () => {
         notifications.show({
           title: "",
           color: "green",

@@ -50,18 +50,6 @@ const EpisodeDetail = (props: Props) => {
 
   const lg = useMediaQuery(`(max-width: ${theme.breakpoints.xl})`);
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
-  const small = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-  const youtubeOpts = mobile
-    ? {
-        width: small ? 350 : 525,
-        height: small ? 200 : 300,
-      }
-    : {
-        height: 400,
-        width: 700,
-      };
-
-  console.log(data, "data");
 
   if (isLoading) return <SkeletonPage />;
   return (

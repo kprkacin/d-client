@@ -5,25 +5,19 @@ import {
   Box,
   rem,
   Affix,
-  ActionIcon,
   Stack,
   Text,
   Center,
-  Avatar,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { useSession } from "next-auth/react";
 import DefaultSideNav from "./DefaultSideNav";
 import {
-  IconSearch,
-  IconPlus,
   IconMessageDots,
   IconRocket,
   IconPlaylistAdd,
   IconSettings,
 } from "@tabler/icons-react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { useSettings } from "@/hooks/useSettings";
 
 const useStyles = createStyles((theme) => ({
@@ -115,7 +109,7 @@ const useStyles = createStyles((theme) => ({
 
 const LayoutHeader = () => {
   const { classes, cx } = useStyles();
-  const { status, data } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const { toggle } = useSettings();
 

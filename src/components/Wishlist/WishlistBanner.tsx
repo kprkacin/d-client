@@ -1,22 +1,12 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { WishlistDetails } from "@/types/wishlistTypes";
+import { type WishlistDetails } from "@/types/wishlistTypes";
 import { posterSizes } from "@/utils/consts";
-import {
-  Container,
-  Grid,
-  SimpleGrid,
-  Box,
-  Image,
-  createStyles,
-  rem,
-  Skeleton,
-  Stack,
-  Group,
-} from "@mantine/core";
+import { Box, Image, createStyles, rem, Stack, Group } from "@mantine/core";
 import React from "react";
 
 const PRIMARY_COL_HEIGHT = rem(450);
@@ -25,7 +15,7 @@ type Props = {
   item: WishlistDetails;
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   box: {
     display: "grid",
     gridTemplateColumns: "repeat(12, 1fr)",
@@ -49,7 +39,7 @@ const useStyles = createStyles((theme) => ({
 const WishlistBanner = (props: Props) => {
   const { item } = props;
 
-  const { classes, theme } = useStyles();
+  const { classes } = useStyles();
   const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2)`;
 
   return (

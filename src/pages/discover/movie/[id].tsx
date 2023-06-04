@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Center, Container, Group, rem } from "@mantine/core";
-
+import { Container } from "@mantine/core";
 import { type NextPageWithLayout } from "../../_app";
 import { useRouter } from "next/router";
 import { api } from "@/utils/api";
 import MovieDetail from "@/components/Discover/DetailsPages/MovieDetail";
-import { MovieDetails, TVDetails } from "@/types/discoverTypes";
+import { type MovieDetails } from "@/types/discoverTypes";
 
 const MoviePage: NextPageWithLayout = () => {
   const router = useRouter();

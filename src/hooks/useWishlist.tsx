@@ -42,7 +42,7 @@ export const WishlistProvider: React.FC<Props> = ({ children }) => {
       onError: () => {
         console.error("Error deleting comment");
       },
-      onSuccess: (res) => {
+      onSuccess: () => {
         notifications.show({
           title: "",
           color: "green",
@@ -59,7 +59,7 @@ export const WishlistProvider: React.FC<Props> = ({ children }) => {
       onError: () => {
         console.error("Error deleting comment");
       },
-      onSuccess: (res) => {
+      onSuccess: () => {
         notifications.show({
           title: "",
           color: "red",
@@ -75,7 +75,7 @@ export const WishlistProvider: React.FC<Props> = ({ children }) => {
     onError: () => {
       console.error("Error deleting comment");
     },
-    onSuccess: (res) => {
+    onSuccess: () => {
       notifications.show({
         title: "",
         color: "green",
@@ -88,12 +88,9 @@ export const WishlistProvider: React.FC<Props> = ({ children }) => {
     },
   });
 
-  const getWishlist = useCallback(
-    (id: string) => {
-      return data;
-    },
-    [data]
-  );
+  const getWishlist = useCallback(() => {
+    return data;
+  }, [data]);
 
   const isInWishlist = useCallback(
     (id: string, wishlistId: string) => {

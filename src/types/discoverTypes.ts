@@ -1,4 +1,5 @@
-import { RouterOutput } from "./routerTypes";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { type RouterOutput } from "./routerTypes";
 
 export type DiscoverMedia = RouterOutput["discover"]["trendingAll"][0];
 

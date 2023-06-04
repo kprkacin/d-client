@@ -32,6 +32,7 @@ import { dateFormat } from "@/utils/helpers";
 import SkeletonPage from "./SkeletonPage";
 import AddToWishlistMenu from "@/components/Wishlist/AddToWishlistMenu";
 import ToggleWatchedButton from "@/components/Watched/ToggleWatchedButton";
+import Comments from "../Comments/Comments";
 
 type Props = {
   data: TVDetails;
@@ -272,6 +273,8 @@ const TVDetail = (props: Props) => {
             </Group>
           </Stack>
         </Paper>
+        <Comments mediaId={data.id.toString()} />
+
         <Title my={theme.spacing.xl}>Similar</Title>
         <Center>
           <SimilarsCarousel data={data.similar} mediaType="movie" />

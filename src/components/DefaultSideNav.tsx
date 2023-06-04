@@ -1,8 +1,6 @@
 import {
   createStyles,
   Navbar,
-  TextInput,
-  Code,
   UnstyledButton,
   Text,
   Group,
@@ -11,10 +9,8 @@ import {
   rem,
   Stack,
   ScrollArea,
-  Affix,
 } from "@mantine/core";
 import {
-  IconSearch,
   IconPlus,
   IconMessageDots,
   IconRocket,
@@ -23,7 +19,8 @@ import {
 import { UserButton } from "./User/UserButton";
 import { api } from "@/utils/api";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
+import { useRouter } from "next/router";
+import SidebarSpotlight from "./SidebarSpotlight";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -163,7 +160,19 @@ const links = [
 
 const DefaultSideNav = () => {
   const { classes, cx, theme } = useStyles();
+  const router = useRouter();
   const { data = [] } = api.chat.allChats.useQuery();
+  const { mutate: createNewChat } = api.chat.newSession.useMutation({
+    onError: () => {
+      console.error("Error deleting comment");
+    },
+    onSuccess: (res) => {
+      void router.push(`/chat/${res.id}`);
+    },
+    onSettled: () => {
+      // upToDateCommentsQuery.refetch();
+    },
+  });
 
   const mainLinks = links.map((link) => (
     <UnstyledButton key={link.label} className={classes.mainLink}>
@@ -199,26 +208,7 @@ const DefaultSideNav = () => {
       <Navbar.Section className={classes.section}>
         <UserButton />
       </Navbar.Section>
-
-      <TextInput
-        placeholder="Search"
-        size="xs"
-        icon={
-          <IconSearch
-            size="0.8rem"
-            stroke={1.5}
-            color={theme.fn.primaryColor()}
-          />
-        }
-        rightSectionWidth={70}
-        rightSection={
-          <Code className={classes.searchCode}>
-            <Text color={theme.fn.primaryColor()}>CTRL + /</Text>
-          </Code>
-        }
-        styles={{ rightSection: { pointerEvents: "none" } }}
-        mb="sm"
-      />
+      <SidebarSpotlight />
 
       <Navbar.Section className={classes.section}>
         <div className={classes.mainLinks}>{mainLinks}</div>
@@ -230,7 +220,11 @@ const DefaultSideNav = () => {
             Chats
           </Text>
           <Tooltip label="New chat" withArrow position="right">
-            <ActionIcon variant="default" size={20}>
+            <ActionIcon
+              variant="default"
+              size={20}
+              onClick={() => createNewChat()}
+            >
               <IconPlus
                 size="1rem"
                 stroke={1.5}

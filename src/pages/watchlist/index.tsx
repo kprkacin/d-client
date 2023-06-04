@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
@@ -14,21 +15,22 @@ import {
   Stack,
   Table,
   Image,
-  useMantineTheme,
   Switch,
   createStyles,
+  Checkbox,
+  rem,
 } from "@mantine/core";
 import { type NextPageWithLayout } from "../_app";
 import { api } from "@/utils/api";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import WishlistBanner from "@/components/Wishlist/WishlistBanner";
-import ChatSpotlight from "@/components/Chat/ChatSpotlight";
 import { useMediaQuery } from "@mantine/hooks";
 import WishlistSpotlight from "@/components/Chat/WishlistSpotlight";
-import { WishlistWithImage } from "@/types/wishlistTypes";
+import { type WishlistWithImage } from "@/types/wishlistTypes";
 import { posterSizes } from "@/utils/consts";
 import { useState } from "react";
+import { IconChartInfographic } from "@tabler/icons-react";
+import WishlistCompareModal from "@/components/Wishlist/WishlistCompareModal";
 
 const useStyles = createStyles((theme) => ({
   label: {
@@ -43,9 +45,25 @@ const WatchlistPage: NextPageWithLayout = () => {
   const { data: publicWishlists = [] } =
     api.wishlist.publicWishlistsWithImages.useQuery();
   const [showPublic, setShowPublic] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selection, setSelection] = useState<string[]>([]);
   const router = useRouter();
   const { classes, theme } = useStyles();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
+
+  const toggleRow = (id: string) =>
+    setSelection((current) =>
+      current.includes(id)
+        ? current.filter((item) => item !== id)
+        : [...current, id]
+    );
+  const toggleAll = () =>
+    setSelection((current) =>
+      current.length ===
+      (showPublic ? publicWishlists.length : wishlists.length)
+        ? []
+        : (showPublic ? publicWishlists : wishlists).map((item) => item.id)
+    );
 
   const { mutate: createNewWishlist } = api.wishlist.newWishlist.useMutation({
     onError: () => {
@@ -80,6 +98,13 @@ const WatchlistPage: NextPageWithLayout = () => {
   ).map((row) => {
     return (
       <tr key={row.id}>
+        <td>
+          <Checkbox
+            checked={selection.includes(row.id)}
+            onChange={() => toggleRow(row.id)}
+            transitionDuration={0}
+          />
+        </td>
         <td>
           <Link href={`/watchlist/${row.id}`}>
             <Group align="center" noWrap>
@@ -146,11 +171,14 @@ const WatchlistPage: NextPageWithLayout = () => {
       <Center>
         <Stack>
           <Grid align="start">
-            <Grid.Col span={4} sm={8}>
+            <Grid.Col span={8} sm={10}>
               <WishlistSpotlight />
             </Grid.Col>
 
-            <Grid.Col span={8} sm={4}>
+            <Grid.Col span={4} sm={2}>
+              <Button onClick={addNewWishlist}>New Watchlist</Button>
+            </Grid.Col>
+            <Grid.Col span={12}>
               <Group>
                 <Switch
                   checked={showPublic}
@@ -159,7 +187,13 @@ const WatchlistPage: NextPageWithLayout = () => {
                     setShowPublic(event.currentTarget.checked)
                   }
                 />
-                <Button onClick={addNewWishlist}>New Watchlist</Button>
+                <Button
+                  disabled={!selection.length}
+                  onClick={() => setShowModal(true)}
+                  leftIcon={<IconChartInfographic size="1.2rem" />}
+                >
+                  Compare ({selection.length})
+                </Button>
               </Group>
             </Grid.Col>
           </Grid>
@@ -167,6 +201,21 @@ const WatchlistPage: NextPageWithLayout = () => {
             <Table verticalSpacing="xs">
               <thead>
                 <tr>
+                  <th style={{ width: rem(40) }}>
+                    <Checkbox
+                      onChange={toggleAll}
+                      checked={
+                        selection.length ===
+                        (showPublic ? publicWishlists : wishlists).length
+                      }
+                      indeterminate={
+                        selection.length > 0 &&
+                        selection.length !==
+                          (showPublic ? publicWishlists : wishlists).length
+                      }
+                      transitionDuration={0}
+                    />
+                  </th>
                   <th>Name</th>
                   {!mobile && (
                     <>
@@ -185,6 +234,12 @@ const WatchlistPage: NextPageWithLayout = () => {
           </ScrollArea>
         </Stack>
       </Center>
+      <WishlistCompareModal
+        opened={showModal}
+        onClose={() => setShowModal(false)}
+        selection={selection}
+        data={showPublic ? publicWishlists : wishlists}
+      />
     </Container>
   );
 };

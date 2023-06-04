@@ -18,7 +18,13 @@ const IndexPage: NextPageWithLayout = () => {
   // }, [postsQuery.data, utils]);
 
   return (
-    <Container fluid>
+    <Container
+      size="lg"
+      style={{
+        // maxWidth: "100vw",
+        overflowX: "hidden",
+      }}
+    >
       {/* <Header /> */}
       {/* <Header /> */}
       <Hero />

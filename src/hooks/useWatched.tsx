@@ -25,7 +25,7 @@ export const WatchedProvider: React.FC<Props> = ({ children }) => {
       onError: () => {
         console.error("Error");
       },
-      onSuccess: (res) => {
+      onSuccess: () => {
         notifications.show({
           title: "",
           color: "green",
@@ -42,7 +42,7 @@ export const WatchedProvider: React.FC<Props> = ({ children }) => {
       onError: () => {
         console.error("Error deleting comment");
       },
-      onSuccess: (res) => {
+      onSuccess: () => {
         notifications.show({
           title: "",
           color: "red",

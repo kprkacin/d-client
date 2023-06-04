@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import React, { useEffect, useMemo, useState } from "react";
-import { Season, type EpisodeDetails } from "@/types/discoverTypes";
+import React, { useEffect } from "react";
 import {
   Center,
   Flex,
@@ -9,15 +8,10 @@ import {
   Group,
   Image,
   Stack,
-  Title,
-  Badge,
   Button,
   createStyles,
   Paper,
-  Blockquote,
   Anchor,
-  LoadingOverlay,
-  Skeleton,
   TextInput,
   MultiSelect,
   Textarea,
@@ -28,33 +22,17 @@ import {
   Switch,
 } from "@mantine/core";
 import { posterSizes } from "@/utils/consts";
-import YouTube from "react-youtube";
-import {
-  IconBookmarkFilled,
-  IconCircleCheck,
-  IconCircleX,
-  IconPlus,
-  IconStarFilled,
-  IconTrendingDown,
-  IconTrendingUp,
-  IconX,
-} from "@tabler/icons-react";
-import { useMediaQuery } from "@mantine/hooks";
+import { IconX } from "@tabler/icons-react";
 
-import { dateFormat } from "@/utils/helpers";
 import SkeletonPage from "../Discover/DetailsPages/SkeletonPage";
 import {
-  Wishlist,
-  WishlistDetails,
-  WishlistRecordWithMedia,
+  type WishlistDetails,
+  type WishlistRecordWithMedia,
 } from "@/types/wishlistTypes";
-import AddToWishlistMenu from "./AddToWishlistMenu";
-import { useWishlist } from "@/hooks/useWishlist";
 import WishlistBanner from "./WishlistBanner";
 import { useRouter } from "next/router";
 import { notifications } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
-import { z } from "zod";
 import WatchlistItemSpotlight from "./WatchlistItemSpotlight";
 import { useSession } from "next-auth/react";
 import ToggleWatchedButton from "../Watched/ToggleWatchedButton";

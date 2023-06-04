@@ -1,14 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { Cast } from "@/types/discoverTypes";
-import { posterSizes } from "@/utils/consts";
-import { dateFormat, yearFormat } from "@/utils/helpers";
-import { Carousel } from "@mantine/carousel";
+import { yearFormat } from "@/utils/helpers";
 import {
   createStyles,
-  Stack,
   Text,
-  Avatar,
-  Center,
   Title,
   Accordion,
   rem,

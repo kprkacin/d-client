@@ -46,9 +46,6 @@ const base: CreateChatCompletionRequest["messages"] = [
   },
 ];
 
-const mockdata =
-  "If you enjoyed The Lord of the Rings trilogy, I would highly recommend checking out The Hobbit trilogy. It follows a similar storyline and is set in the same world as The Lord of the Rings. The Hobbit trilogy is directed by Peter Jackson, who also directed The Lord of the Rings trilogy, making for a very seamless transition between the two. Here are some other recommendations that are similar in theme and tone to The Lord of the Rings:\n\nRecommendation list:\n- Harry Potter and the Sorcerer's Stone (tt0241527)\n- The Chronicles of Narnia: The Lion, the Witch and the Wardrobe (tt0363771)\n- Pirates of the Caribbean: The Curse of the Black Pearl (tt0325980)\n- The NeverEnding Story (tt0088323)\n- Willow (tt0096446)\n- The Dark Crystal (tt0083791)\n- Labyrinth (tt0091369)\n- Eragon (tt0449010)\n- The Princess Bride (tt0093779)";
-
 const configuration = new Configuration({
   organization: env.OPENAI_ORG,
   apiKey: env.OPENAI_API_KEY,

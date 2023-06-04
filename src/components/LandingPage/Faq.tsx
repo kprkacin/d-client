@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import {
   createStyles,
   Image,
@@ -66,13 +67,19 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function FaqWithImage() {
-  const { classes } = useStyles();
+  const { classes, theme } = useStyles();
+
+  const dark = theme.colorScheme === "dark";
+
   return (
     <div className={classes.wrapper}>
       <Container size="lg" sx={{ position: "relative", zIndex: 99 }}>
         <Grid id="faq-grid" gutter={50}>
           <Col span={12} md={6}>
-            <Image src={"faq.svg"} alt="Frequently Asked Questions" />
+            <Image
+              src={dark ? "faq-dark.svg" : "faq-light.svg"}
+              alt="Frequently Asked Questions"
+            />
           </Col>
           <Col span={12} md={6}>
             <Title order={2} align="left" className={classes.title}>
@@ -86,61 +93,72 @@ export function FaqWithImage() {
             >
               <Accordion.Item className={classes.item} value="reset-password">
                 <Accordion.Control>
-                  What is an augmented reality business card?{" "}
+                  How does the movie recommendation system work?
                 </Accordion.Control>
                 <Accordion.Panel>
-                  An augmented reality business card is a type of business card
-                  that includes interactive content that can be viewed when
-                  scanned with a smartphone. The content can range from images,
-                  videos, and audio to 3D models and games.
+                  Our movie recommendation system is powered by advanced AI
+                  technology. It analyzes your preferences, taking into account
+                  factors such as genre, ratings, and popularity, to generate
+                  personalized movie suggestions. By understanding your unique
+                  tastes, it ensures that the recommendations align with your
+                  preferences.
                 </Accordion.Panel>
               </Accordion.Item>
 
               <Accordion.Item className={classes.item} value="another-account">
                 <Accordion.Control>
-                  How do augmented reality business cards work?
+                  Can I trust the movie recommendations provided?
                 </Accordion.Control>
                 <Accordion.Panel>
-                  Augmented Reality (AR) business cards use image recognition
-                  technology to recognize a pattern printed on the card. When
-                  scanned, the card triggers the AR experience, allowing users
-                  to interact with the content.
+                  Yes, you can! We strive to offer high-quality movie
+                  recommendations. Our system considers various factors and
+                  incorporates user feedback to curate a selection of
+                  well-regarded films. However, it's important to remember that
+                  movie preferences can be subjective, so individual experiences
+                  may vary.
                 </Accordion.Panel>
               </Accordion.Item>
 
               <Accordion.Item className={classes.item} value="newsletter">
                 <Accordion.Control>
-                  What types of content can be included on an augmented reality
-                  business card?
+                  Can I request recommendations from specific genres or time
+                  periods?
                 </Accordion.Control>
                 <Accordion.Panel>
-                  Content can include images, videos, audio, 3D models, and
-                  games. You can also include links to websites or social media
-                  profiles.
+                  Absolutely! Our movie recommendation system allows you to
+                  specify your preferences, including genres, time periods, and
+                  even specific actors or directors. By communicating your
+                  preferences, you can receive recommendations tailored to your
+                  desired criteria.
                 </Accordion.Panel>
               </Accordion.Item>
 
               <Accordion.Item className={classes.item} value="credit-card">
                 <Accordion.Control>
-                  How much does it cost to create an augmented reality business
-                  card?
+                  Does the system recommend movies from different countries?
                 </Accordion.Control>
                 <Accordion.Panel>
-                  Costs vary depending on the complexity of the content and the
-                  type of card you choose. Generally, creating an augmented
-                  reality business card can cost anywhere from $150-$500.
+                  Definitely! We take pride in offering a diverse selection of
+                  movies from various countries and cultures. Whether you're
+                  interested in exploring films from Bollywood, French cinema,
+                  or Japanese anime, our system has a wide range of
+                  international movies to cater to your global cinematic
+                  interests.
                 </Accordion.Panel>
               </Accordion.Item>
 
               <Accordion.Item className={classes.item} value="payment">
                 <Accordion.Control>
-                  How long does it take to create an augmented reality business
-                  card?
+                  Can I access the movie recommendation service on my mobile
+                  device?
                 </Accordion.Control>
                 <Accordion.Panel>
-                  It usually takes about two weeks to create an augmented
-                  reality business card, depending on the complexity of the
-                  content
+                  Yes, you can! Our movie recommendation service is accessible
+                  on various devices, including smartphones and tablets. Simply
+                  visit our website through your mobile browser and enjoy the
+                  same personalized movie recommendations and chat experience
+                  while on the go. Whether you're at home or out and about, our
+                  service is ready to assist you in finding your next movie gem.
                 </Accordion.Panel>
               </Accordion.Item>
             </Accordion>

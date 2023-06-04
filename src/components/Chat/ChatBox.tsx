@@ -52,7 +52,6 @@ const greetingMessage =
   "Greetings! As a film and TV recommendation expert, I'm here to provide you with valuable insights and suggestions on the best movies and TV shows to suit your preferences. With a vast knowledge of various genres, eras, and styles, I can assist you in finding captivating entertainment options. Whether you're in the mood for thrilling action, heartwarming dramas, or side-splitting comedies, I've got you covered. Just let me know your preferences, and I'll curate a tailored list of recommendations to enhance your viewing experience. Get ready to explore the fascinating world of cinema and television with my expert guidance!";
 
 const ChatBox = (props: Props) => {
-  const ref = React.useRef(null);
   const { id } = props;
   const chat = api.chat.byId.useQuery({ id });
 
@@ -67,8 +66,6 @@ const ChatBox = (props: Props) => {
       void chat.refetch();
     },
   });
-
-  console.log(chat.isInitialLoading);
 
   const { classes, theme } = useStyles();
   const { data } = useSession();

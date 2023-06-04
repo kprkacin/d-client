@@ -14,21 +14,21 @@ const mockdata = [
     profession: "CEO",
     email: "SamanthaSung@gmail.com",
     avatar: "SS",
-    description: `"I recently switched to using augmented reality business cards for my marketing company, and it's been a game-changer. My clients are always impressed when I hand them my card and they can see a 3D model of my latest project just by scanning it with their phone. It's a great conversation starter and really sets me apart from my competitors."`,
+    description: `"This has completely transformed the way I choose movies to watch. As a busy professional, I don't have the time to browse through endless movie lists. I simply chat with the bot, and it provides me with personalized recommendations that align perfectly with my tastes. It's like having my own personal movie curator. I've discovered so many amazing films that I would have never found on my own. Movie nights are now a delight!"`,
   },
   {
     name: "Noah Brown",
     profession: "Graphic Designer",
     email: "NoahBrown@gmail.com",
     avatar: "NB",
-    description: `"As a graphic designer, I'm always looking for ways to showcase my work in a unique and impressive way. Augmented reality business cards are the perfect solution. I can include a portfolio of my designs on my card, and potential clients can see them in action just by scanning the card with their phone. It's a great way to stand out and make a lasting impression."`,
+    description: `"I consider myself a movie enthusiast, but even I sometimes struggle to find the perfect movie to match my mood. That's where this comes in. The chatbot understands me better than anyone else when it comes to my movie preferences. It's like chatting with a knowledgeable film connoisseur. I've been introduced to a whole new world of movies I wouldn't have discovered otherwise. It has made movie-watching exciting and effortless for me!" `,
   },
   {
     name: "Hailey Tanaka",
     profession: "Owner",
     email: "HaileyTanaka@gmail.com",
     avatar: "HT",
-    description: `"I wasn't sure if augmented reality business cards were worth the investment at first, but I'm so glad I gave them a try. Not only do they make me look tech-savvy and innovative, but they also make it easy for potential clients to learn more about my business and what I have to offer. I've had several people tell me they've shared my card with others because it's so cool and unique. Highly recommend!"`,
+    description: `"I can't recommend it enough! As a self-proclaimed cinephile, I thought I had seen it all. However, this app has opened my eyes to a whole new realm of cinema. The personalized recommendations are spot-on, and I love that it goes beyond mainstream films to offer a diverse selection of international and indie movies. With it, my movie-watching horizons have been expanded and introduced me to incredible films I would have otherwise overlooked. It's a must-have for any movie lover!"`,
   },
 ];
 

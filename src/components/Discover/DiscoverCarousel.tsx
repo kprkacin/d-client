@@ -84,16 +84,18 @@ function Card({ id, image, title, category, callback }: CardProps) {
           {title}
         </Title>
       </div>
-      <Group position="apart">
-        <Button
-          className={classes.cardButton}
-          variant="subtle"
-          onClick={handleCallback}
-        >
-          Watch trailer
-        </Button>
-        <AddToWishlistMenu mediaId={id.toString()} mediaType={category} />
-      </Group>
+      {category !== "person" && (
+        <Group position="apart">
+          <Button
+            className={classes.cardButton}
+            variant="subtle"
+            onClick={handleCallback}
+          >
+            Watch trailer
+          </Button>
+          <AddToWishlistMenu mediaId={id.toString()} mediaType={category} />
+        </Group>
+      )}
     </Paper>
   );
 }

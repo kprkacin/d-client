@@ -5,12 +5,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
-import { TRPCError } from "@trpc/server";
 import { Prisma } from "@prisma/client";
-import { env } from "@/env.mjs";
-import { fetchOptions } from "../consts";
-import { type Result, transformMedia } from "./tmdb";
-import { type Media } from "@/types/discoverTypes";
 
 const defaultWishlistSelect = Prisma.validator<Prisma.WatchedMediaSelect>()({
   id: true,

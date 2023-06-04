@@ -26,10 +26,8 @@ import {
   type SpotlightActionProps,
 } from "@mantine/spotlight";
 import { IconSearch } from "@tabler/icons-react";
-import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { useDebouncedValue } from "@mantine/hooks";
-import { useWishlist } from "@/hooks/useWishlist";
 
 function SpotlightControl() {
   const theme = useMantineTheme();

@@ -13,7 +13,6 @@ import {
   createStyles,
   Paper,
   Blockquote,
-  LoadingOverlay,
 } from "@mantine/core";
 import { posterSizes } from "@/utils/consts";
 import YouTube from "react-youtube";
@@ -31,6 +30,7 @@ import { dateFormat } from "@/utils/helpers";
 import SkeletonPage from "./SkeletonPage";
 import AddToWishlistMenu from "@/components/Wishlist/AddToWishlistMenu";
 import ToggleWatchedButton from "@/components/Watched/ToggleWatchedButton";
+import Comments from "../Comments/Comments";
 
 type Props = {
   data: MovieDetails;
@@ -82,8 +82,6 @@ const MovieDetail = (props: Props) => {
         width: 700,
       };
   if (isLoading) return <SkeletonPage />;
-
-  console.log(data, "data");
 
   return (
     <Center component={Paper} className={classes.center} p={theme.spacing.md}>
@@ -259,6 +257,7 @@ const MovieDetail = (props: Props) => {
             </Group>
           </Stack>
         </Paper>
+        <Comments mediaId={data.id.toString()} />
         <Title my={theme.spacing.xl}>Similar</Title>
         <Center>
           <SimilarsCarousel data={data.similar} mediaType="movie" />

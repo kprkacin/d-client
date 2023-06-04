@@ -9,27 +9,28 @@ import {
   SimpleGrid,
   Container,
   Box,
+  Stack,
 } from "@mantine/core";
-import { IconGauge, IconUser, IconCookie } from "@tabler/icons-react";
+import { IconGauge, IconUser, IconDeviceTv } from "@tabler/icons-react";
 
 const mockdata = [
   {
-    title: "Unique and memorable",
+    title: "Personalized Recommendations",
     description:
-      "AR business cards are a unique and memorable way to make an impression on potential clients or partners. By using AR technology, you can create a business card that stands out and captures attention",
-    icon: IconGauge,
-  },
-  {
-    title: "Interactive and engaging",
-    description:
-      "AR business cards are more engaging and interactive than traditional business cards. They allow you to showcase your products, services, or projects in a way that is dynamic and engaging.",
+      "Our product takes the guesswork out of choosing your next film. By utilizing the power of ChatGPT, our chatbot understands your unique preferences and tastes. Whether you're a fan of action-packed blockbusters or indie dramas, the algorithm analyzes your input and provides personalized movie recommendations tailored specifically to your liking.",
     icon: IconUser,
   },
   {
-    title: "Easy to share",
+    title: "Time-saving and Efficient",
     description:
-      "AR business cards are easy to share with anyone, anywhere. All they need is a smartphone with a QR code scanner to experience your AR content.",
-    icon: IconCookie,
+      "We understand that time is precious, and searching for the right movie can be a daunting task. This streamlines the entire process, allowing you to get instant recommendations with just a few interactions. No more wasting hours scrolling through endless options or reading countless reviews.",
+    icon: IconGauge,
+  },
+  {
+    title: "Diverse Movie Selection",
+    description:
+      "Using our app you'll explore a wide range of genres, uncover hidden gems, and rediscover timeless classics. Our extensive movie database encompasses a vast collection of films from various countries, eras, and styles. Whether you're seeking the latest Hollywood blockbuster or an obscure foreign film.",
+    icon: IconDeviceTv,
   },
 ];
 
@@ -109,7 +110,7 @@ const useStyles = createStyles((theme) => ({
       content: '""',
       display: "block",
       backgroundColor: theme.fn.primaryColor(),
-      width: 45,
+      width: "100%",
       height: 2,
       marginTop: theme.spacing.sm,
     },
@@ -126,13 +127,15 @@ export function FeaturesCards() {
       className={classes.card}
       p="xl"
     >
-      <feature.icon size={50} stroke={2} color={theme.fn.primaryColor()} />
-      <Text size="lg" weight={500} className={classes.cardTitle} mt="md">
-        {feature.title}
-      </Text>
-      <Text size="sm" color="dimmed" mt="sm">
-        {feature.description}
-      </Text>
+      <Stack align="center">
+        <feature.icon size={50} stroke={2} color={theme.fn.primaryColor()} />
+        <Text size="lg" weight={500} className={classes.cardTitle} mt="md">
+          {feature.title}
+        </Text>
+        <Text size="sm" color="dimmed" mt="sm">
+          {feature.description}
+        </Text>
+      </Stack>
     </Card>
   ));
   return (

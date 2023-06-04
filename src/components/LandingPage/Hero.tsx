@@ -21,7 +21,6 @@ const useStyles = createStyles((theme) => ({
   content: {
     maxWidth: 580,
     marginRight: theme.spacing.xl,
-
     [theme.fn.smallerThan("md")]: {
       maxWidth: "100%",
       marginRight: 0,
@@ -70,34 +69,41 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const Hero = () => {
-  const { classes } = useStyles();
+  const { classes, theme } = useStyles();
+
+  const dark = theme.colorScheme === "dark";
+
   return (
     <Container>
       <div className={classes.inner}>
         <div className={classes.content}>
           <Title className={classes.title}>
-            Introducing{" "}
-            <span className={classes.highlight}>AR Business Cards</span>, the
-            easiest way to make a lasting impression.
+            Discover your next cinematic adventure with
+            <span className={classes.highlight}>
+              the power of artificial intelligence.
+            </span>
           </Title>
           <Text color="dimmed" mt="md">
-            Our software allows you to create stunning AR business cards that
-            come to life when scanned. Imagine being able to showcase a
-            360-degree view of your product, a video of your latest project, or
-            a virtual tour of your office - all on a single business card. And
-            the best part? It's easy to share with anyone, anywhere. Simply scan
-            the QR code on the back of the card and experience the future of
-            networking today. Try AR Business Cards now and take your business
-            to the next level.
+            Our chatbot, powered by ChatGPT, is here to recommend the perfect
+            movies for your every mood and preference. Unlock a world of
+            entertainment as our intelligent algorithm analyzes your tastes,
+            understands your preferences, and suggests films that are tailored
+            just for you. Whether you're in the mood for an action-packed
+            blockbuster, a heartwarming romantic comedy, a spine-chilling horror
+            flick, or a thought-provoking drama, we've got you covered.
           </Text>
 
           <Group mt={30}>
-            <Button radius="xl" size="md" className={classes.control}>
+            <Button size="md" className={classes.control}>
               Try Demo
             </Button>
           </Group>
         </div>
-        <Image src="hero.svg" alt="hero" className={classes.image} />
+        <Image
+          src={dark ? "hero-dark.svg" : "hero-light.svg"}
+          alt="hero"
+          className={classes.image}
+        />
       </div>
     </Container>
   );
