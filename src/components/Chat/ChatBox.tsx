@@ -10,12 +10,13 @@ import {
   TextInput,
   createStyles,
 } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 import TextBubble from "./TextBubble";
 import { IconSend } from "@tabler/icons-react";
 import { api } from "@/utils/api";
 import RecommendationCarousel from "./Recommendations/RecommendationCarousel";
 import { useSession } from "next-auth/react";
+import { notifications } from "@mantine/notifications";
 
 const useStyles = createStyles((theme) => ({
   paper: {
@@ -55,9 +56,16 @@ const ChatBox = (props: Props) => {
   const { id } = props;
   const chat = api.chat.byId.useQuery({ id });
 
-  const { mutate: queryAsk, isLoading } = api.chat.ask.useMutation({
-    onError: () => {
-      console.error("Error deleting comment");
+  const {
+    mutate: updateRecoommendations,
+    isLoading: isLoadingRecommendations,
+  } = api.chat.updateChatRecordRecommedations.useMutation({
+    onError: (err) => {
+      notifications.show({
+        title: err.data?.code,
+        message: err.message,
+        color: "red",
+      });
     },
     onSuccess: () => {
       //
@@ -65,6 +73,22 @@ const ChatBox = (props: Props) => {
     onSettled: () => {
       void chat.refetch();
     },
+  });
+  const { mutate: queryAsk, isLoading } = api.chat.ask.useMutation({
+    onError: (err) => {
+      notifications.show({
+        title: err.data?.code,
+        message: err.message,
+        color: "red",
+      });
+      console.error(err.message);
+    },
+    onSuccess: (res) => {
+      updateRecoommendations({ chatRecordId: res.id });
+    },
+    // onSettled: () => {
+    //   void chat.refetch();
+    // },
   });
 
   const { classes, theme } = useStyles();
@@ -121,7 +145,10 @@ const ChatBox = (props: Props) => {
         )}
       </Center>
       <Box pos="relative">
-        <LoadingOverlay visible={chat.isLoading || isLoading} overlayBlur={2} />
+        <LoadingOverlay
+          visible={chat.isLoading || isLoading || isLoadingRecommendations}
+          overlayBlur={2}
+        />
 
         <TextInput
           mb={0}

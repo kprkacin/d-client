@@ -21,6 +21,7 @@ import { api } from "@/utils/api";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import SidebarSpotlight from "./SidebarSpotlight";
+import { notifications } from "@mantine/notifications";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -163,8 +164,12 @@ const DefaultSideNav = () => {
   const router = useRouter();
   const { data = [] } = api.chat.allChats.useQuery();
   const { mutate: createNewChat } = api.chat.newSession.useMutation({
-    onError: () => {
-      console.error("Error deleting comment");
+    onError: (err) => {
+      notifications.show({
+        title: err.data?.code,
+        message: err.message,
+        color: "red",
+      });
     },
     onSuccess: (res) => {
       void router.push(`/chat/${res.id}`);

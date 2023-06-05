@@ -174,8 +174,72 @@ export const chatRouter = createTRPCRouter({
       const idRegex = /(tt\d{7})/g;
       const ids = content.match(idRegex)?.map((id) => id);
 
+      // const data = await Promise.allSettled(
+      //   ids?.map(async (id) => {
+      //     const result = await fetch(
+      //       `${env.MOVIE_API_URL}3/find/${id}?external_source=imdb_id`,
+      //       fetchOptions
+      //     );
+
+      //     return result.json();
+      //   }) || []
+      // );
+
+      // const fullData = data
+      //   .filter((result) => result.status === "fulfilled")
+      //   .map((result) => {
+      //     const value: ByImdbID = (result as PromiseFulfilledResult<any>).value;
+      //     const movie = value.movie_results[0];
+      //     const tv = value.tv_results[0];
+      //     return movie || tv;
+      //   })
+      //   .map((result) => result as PromiseFulfilledResult<JSON>) as Array<any>;
+
+      await prisma.chatRecord.create({
+        data: {
+          paragraph: query,
+          role: "user",
+          ids: [],
+          fullData: [],
+          chatSession: { connect: { id: chatSessionId } },
+        },
+        select: defaultChatRecordSelect,
+      });
+      return await prisma.chatRecord.create({
+        data: {
+          paragraph: firstParagraph,
+          ids,
+          role: "assistant",
+          fullData: [],
+          chatSession: { connect: { id: chatSessionId } },
+        },
+        select: defaultChatRecordSelect,
+      });
+    }),
+
+  updateChatRecordRecommedations: protectedProcedure
+    .input(
+      z.object({
+        chatRecordId: z.string().cuid(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { chatRecordId } = input;
+      const { prisma } = ctx;
+      const chatRecord = await prisma.chatRecord.findUnique({
+        where: {
+          id: chatRecordId,
+        },
+        select: defaultChatRecordSelect,
+      });
+      if (!chatRecord) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Not found",
+        });
+      }
       const data = await Promise.allSettled(
-        ids?.map(async (id) => {
+        chatRecord.ids?.map(async (id) => {
           const result = await fetch(
             `${env.MOVIE_API_URL}3/find/${id}?external_source=imdb_id`,
             fetchOptions
@@ -195,28 +259,14 @@ export const chatRouter = createTRPCRouter({
         })
         .map((result) => result as PromiseFulfilledResult<JSON>) as Array<any>;
 
-      await prisma.chatRecord.create({
+      return await prisma.chatRecord.update({
+        where: {
+          id: chatRecordId,
+        },
         data: {
-          paragraph: query,
-          role: "user",
-          ids: [],
-          fullData: [],
-          chatSession: { connect: { id: chatSessionId } },
+          fullData: fullData,
         },
         select: defaultChatRecordSelect,
-      });
-      await prisma.chatRecord.create({
-        data: {
-          paragraph: firstParagraph,
-          ids,
-          role: "assistant",
-          fullData,
-          chatSession: { connect: { id: chatSessionId } },
-        },
-        select: defaultChatRecordSelect,
-      });
-      return prisma.chatSession.findUnique({
-        where: { id: chatSessionId },
       });
     }),
 });

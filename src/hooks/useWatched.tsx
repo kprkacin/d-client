@@ -22,8 +22,12 @@ export const WatchedProvider: React.FC<Props> = ({ children }) => {
 
   const { mutate: upsertWatchedRecord } =
     api.watched.newWatchedRecord.useMutation({
-      onError: () => {
-        console.error("Error");
+      onError: (err) => {
+        notifications.show({
+          title: err.data?.code,
+          message: err.message,
+          color: "red",
+        });
       },
       onSuccess: () => {
         notifications.show({
@@ -39,8 +43,12 @@ export const WatchedProvider: React.FC<Props> = ({ children }) => {
 
   const { mutate: deleteWatchedRecord } =
     api.watched.deleteWatchedRecord.useMutation({
-      onError: () => {
-        console.error("Error deleting comment");
+      onError: (err) => {
+        notifications.show({
+          title: err.data?.code,
+          message: err.message,
+          color: "red",
+        });
       },
       onSuccess: () => {
         notifications.show({

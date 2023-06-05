@@ -31,6 +31,7 @@ import { posterSizes } from "@/utils/consts";
 import { useState } from "react";
 import { IconChartInfographic } from "@tabler/icons-react";
 import WishlistCompareModal from "@/components/Wishlist/WishlistCompareModal";
+import { notifications } from "@mantine/notifications";
 
 const useStyles = createStyles((theme) => ({
   label: {
@@ -66,8 +67,12 @@ const WatchlistPage: NextPageWithLayout = () => {
     );
 
   const { mutate: createNewWishlist } = api.wishlist.newWishlist.useMutation({
-    onError: () => {
-      console.error("Error creating watchlist");
+    onError: (err) => {
+      notifications.show({
+        title: err.data?.code,
+        message: err.message,
+        color: "red",
+      });
     },
     onSuccess: (res) => {
       void router.push(`/watchlist/${res.id}`);
@@ -77,8 +82,12 @@ const WatchlistPage: NextPageWithLayout = () => {
     },
   });
   const { mutate: deletWishlist } = api.wishlist.deleteWishlist.useMutation({
-    onError: () => {
-      console.error("Error deleting comment");
+    onError: (err) => {
+      notifications.show({
+        title: err.data?.code,
+        message: err.message,
+        color: "red",
+      });
     },
     onSuccess: (res) => {
       console.log(res);

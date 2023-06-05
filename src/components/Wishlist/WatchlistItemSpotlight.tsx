@@ -28,6 +28,7 @@ import {
 import { IconSearch } from "@tabler/icons-react";
 import { useCallback, useEffect, useState } from "react";
 import { useDebouncedValue } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 
 function SpotlightControl() {
   const theme = useMantineTheme();
@@ -137,8 +138,12 @@ const WatchlistItemSpotlight = ({ addToWishlist }: Props) => {
     [addToWishlist]
   );
   const { mutate: discoverNewMedia } = api.discover.discover.useMutation({
-    onError: () => {
-      console.error("Error deleting comment");
+    onError: (err) => {
+      notifications.show({
+        title: err.data?.code,
+        message: err.message,
+        color: "red",
+      });
     },
     onSuccess: (res) => {
       const actions: SpotlightAction[] = (res?.results || []).map(

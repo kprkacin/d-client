@@ -39,8 +39,12 @@ export const WishlistProvider: React.FC<Props> = ({ children }) => {
 
   const { mutate: addMediaToWishlist } =
     api.wishlist.addMediaToWishlist.useMutation({
-      onError: () => {
-        console.error("Error deleting comment");
+      onError: (err) => {
+        notifications.show({
+          title: err.data?.code,
+          message: err.message,
+          color: "red",
+        });
       },
       onSuccess: () => {
         notifications.show({
@@ -56,8 +60,12 @@ export const WishlistProvider: React.FC<Props> = ({ children }) => {
 
   const { mutate: removeMediaFromWishlist } =
     api.wishlist.removeMediaFromWishlist.useMutation({
-      onError: () => {
-        console.error("Error deleting comment");
+      onError: (err) => {
+        notifications.show({
+          title: err.data?.code,
+          message: err.message,
+          color: "red",
+        });
       },
       onSuccess: () => {
         notifications.show({
@@ -72,8 +80,12 @@ export const WishlistProvider: React.FC<Props> = ({ children }) => {
       },
     });
   const { mutate: update } = api.wishlist.updateWishlist.useMutation({
-    onError: () => {
-      console.error("Error deleting comment");
+    onError: (err) => {
+      notifications.show({
+        title: err.data?.code,
+        message: err.message,
+        color: "red",
+      });
     },
     onSuccess: () => {
       notifications.show({

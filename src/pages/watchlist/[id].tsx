@@ -17,8 +17,12 @@ const WatchlistDetailPage: NextPageWithLayout = () => {
   });
   const { mutate: update, isLoading: updateLoading } =
     api.wishlist.updateWishlist.useMutation({
-      onError: () => {
-        console.error("Error deleting comment");
+      onError: (err) => {
+        notifications.show({
+          title: err.data?.code,
+          message: err.message,
+          color: "red",
+        });
       },
       onSuccess: () => {
         notifications.show({
@@ -35,8 +39,12 @@ const WatchlistDetailPage: NextPageWithLayout = () => {
 
   const { mutate: removeMediaFromWishlist, isLoading: removeLoading } =
     api.wishlist.removeMediaFromWishlist.useMutation({
-      onError: () => {
-        console.error("Error deleting comment");
+      onError: (err) => {
+        notifications.show({
+          title: err.data?.code,
+          message: err.message,
+          color: "red",
+        });
       },
       onSuccess: () => {
         notifications.show({
@@ -52,8 +60,12 @@ const WatchlistDetailPage: NextPageWithLayout = () => {
     });
   const { mutate: addMediaToWishlist, isLoading: addLoading } =
     api.wishlist.addMediaToWishlist.useMutation({
-      onError: () => {
-        console.error("Error deleting comment");
+      onError: (err) => {
+        notifications.show({
+          title: err.data?.code,
+          message: err.message,
+          color: "red",
+        });
       },
       onSuccess: () => {
         notifications.show({

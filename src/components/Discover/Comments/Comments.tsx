@@ -59,8 +59,12 @@ const Comments = (props: Props) => {
   });
 
   const { mutate: upsertComment } = api.comment.upsertComment.useMutation({
-    onError: () => {
-      console.error("Error");
+    onError: (err) => {
+      notifications.show({
+        title: err.data?.code,
+        message: err.message,
+        color: "red",
+      });
     },
     onSuccess: () => {
       notifications.show({
@@ -77,8 +81,12 @@ const Comments = (props: Props) => {
   });
 
   const { mutate: deleteComment } = api.comment.deleteComment.useMutation({
-    onError: () => {
-      console.error("Error deleting comment");
+    onError: (err) => {
+      notifications.show({
+        title: err.data?.code,
+        message: err.message,
+        color: "red",
+      });
     },
     onSuccess: () => {
       notifications.show({

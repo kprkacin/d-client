@@ -32,8 +32,12 @@ const ChatPage: NextPageWithLayout = () => {
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
   const { mutate: createNewChat } = api.chat.newSession.useMutation({
-    onError: () => {
-      console.error("Error deleting comment");
+    onError: (err) => {
+      notifications.show({
+        title: err.data?.code,
+        message: err.message,
+        color: "red",
+      });
     },
     onSuccess: (res) => {
       void router.push(`/chat/${res.id}`);
@@ -43,8 +47,12 @@ const ChatPage: NextPageWithLayout = () => {
     },
   });
   const { mutate: deleteChat } = api.chat.deleteSession.useMutation({
-    onError: () => {
-      console.error("Error deleting comment");
+    onError: (err) => {
+      notifications.show({
+        title: err.data?.code,
+        message: err.message,
+        color: "red",
+      });
     },
     onSuccess: () => {
       notifications.show({
