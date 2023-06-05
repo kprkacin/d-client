@@ -120,7 +120,7 @@ const TVDetail = (props: Props) => {
         <Group
           w="100%"
           noWrap={lg || mobile ? false : true}
-          position="left"
+          position="center"
           mah={lg || mobile ? "100%" : 400}
           align="start"
           spacing={0}

@@ -116,7 +116,7 @@ const MovieDetail = (props: Props) => {
         <Group
           w="100%"
           noWrap={lg || mobile ? false : true}
-          position="left"
+          position="center"
           mah={lg || mobile ? "100%" : 400}
           align="start"
           spacing={0}
@@ -221,7 +221,6 @@ const MovieDetail = (props: Props) => {
         <Blockquote mt={theme.spacing.xl}>{data.tagline}</Blockquote>
 
         <CastCarousel data={data.credits.cast} />
-        <Title my={theme.spacing.xl}>Watch here</Title>
         <WatchProviders data={data["watch/providers"]} />
         <Title my={theme.spacing.xl}>Details</Title>
         <Paper p={theme.spacing.lg}>

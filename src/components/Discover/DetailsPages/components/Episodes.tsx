@@ -63,7 +63,7 @@ const useStyles = createStyles((theme) => ({
       maxWidth: 600,
     },
     [theme.fn.smallerThan("sm")]: {
-      maxWidth: 500,
+      maxWidth: 350,
     },
   },
   badge: {
