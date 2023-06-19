@@ -10,13 +10,14 @@ import {
   TextInput,
   createStyles,
 } from "@mantine/core";
-import React, { useState } from "react";
+import React from "react";
 import TextBubble from "./TextBubble";
 import { IconSend } from "@tabler/icons-react";
 import { api } from "@/utils/api";
 import RecommendationCarousel from "./Recommendations/RecommendationCarousel";
 import { useSession } from "next-auth/react";
 import { notifications } from "@mantine/notifications";
+import { getHotkeyHandler } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
   paper: {
@@ -160,6 +161,7 @@ const ChatBox = (props: Props) => {
           onChange={(event) => {
             setMessage(event.currentTarget.value);
           }}
+          onKeyDown={getHotkeyHandler([["Enter", () => ask(message)]])}
           placeholder="Ask"
           rightSection={
             <ActionIcon size="xs" onClick={() => ask(message)}>
