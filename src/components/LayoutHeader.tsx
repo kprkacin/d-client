@@ -120,7 +120,7 @@ const LayoutHeader = () => {
   return (
     <Box>
       <DefaultSideNav />
-      <Affix position={{ bottom: 0, right: 0 }} w="100%">
+      <Affix position={{ bottom: 0, right: 0 }} w="100%" id="mobile-nav">
         <Group
           className={cx(classes.header, classes.hiddenDesktop)}
           spacing={0}

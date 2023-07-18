@@ -96,6 +96,17 @@ const ChatBox = (props: Props) => {
   const { data } = useSession();
 
   const [message, setMessage] = React.useState("");
+
+  const handleFocus = () => {
+    document.getElementById("mobile-nav")?.style.display = "none";
+    console.log("Keyboard is open");
+  };
+
+  const handleBlur = () => {
+    document.getElementById("mobile-nav")?.style.display = "block";
+    console.log("Keyboard is closed");
+  };
+
   const ask = (question: string) => {
     setMessage("");
     try {
@@ -152,7 +163,7 @@ const ChatBox = (props: Props) => {
         />
 
         <TextInput
-          mb={0}
+          mb={theme.spacing.lg}
           value={message}
           style={{
             position: "relative",
@@ -161,6 +172,8 @@ const ChatBox = (props: Props) => {
           onChange={(event) => {
             setMessage(event.currentTarget.value);
           }}
+          handleFocus={handleFocus}
+          handleBlur={handleBlur}
           onKeyDown={getHotkeyHandler([["Enter", () => ask(message)]])}
           placeholder="Ask"
           rightSection={
